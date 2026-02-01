@@ -3,27 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Sales Executive Marketing - Desain Rumah, Website, Aplikasi Android, Video Editing. Hubungi via WhatsApp.">
+	<meta name="keywords" content="Sales Executive, Desain Rumah, Website, Aplikasi Android">
+
     <title>Sales Executive | M DAUD S.M</title>
     <link rel="stylesheet" href="style.css">
+	<link rel="icon" href="img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="img/favicon.png">
+
 </head>
 <body>
 
+<div id="scroll-indicator"></div>
+
+
 <header>
+
     <div class="logo">M DAUD S.M</div>
     <nav>
+	
+
         <a href="#home">Home</a>
         <a href="#jasa">Jasa</a>
         <a href="#portfolio">Hasil</a>
         <a href="#kontak">Kontak</a>
+		<button id="darkToggle" class="dark-toggle" title="Mode Gelap / Terang">🌙</button>
+
+
     </nav>
 </header>
+
 
 <section id="home" class="hero">
     <h1>Sales Executive Marketing</h1>
     <p>Desain Rumah • Banner • Website • Aplikasi Android • Video Editor</p>
-    <a href="https://wa.me/6285697321423" class="btn-wa" target="_blank">
-        Hubungi via WhatsApp
-    </a>
+<div class="cta-wa">
+  <a href="javascript:void(0)"
+     id="openChatFromCTA"
+     class="wa-animated">
+    <span class="wa-icon">💬</span>
+    <span class="wa-text" id="waText">Chat WhatsApp</span>
+  </a>
+</div>
+
+
+
+	
 </section>
 
 <section id="jasa" class="services">
@@ -37,7 +62,7 @@
     </div>
 </section>
 
-<section id="portfolio" class="portfolio">
+<section id="portfolio" class="portfolio fade">
     <h2>Hasil Pekerjaan</h2>
 
     <div class="slider">
@@ -58,15 +83,91 @@
     </div>
 </section>
 
-<section id="kontak" class="contact">
-    <h2>Kontak Sales Executive</h2>
-    <p><strong>Nama:</strong> M DAUD S.M</p>
-    <p><strong>WhatsApp:</strong> 0856-9732-1423</p>
+<section id="kontak" class="contact fade">
+  <h2>Kontak Sales Executive</h2>
+  <p><strong>Nama:</strong> M DAUD S.M</p>
+  <p><strong>WhatsApp:</strong> 0856-9732-1423</p>
 
-    <a href="https://wa.me/6285697321423" class="btn-wa" target="_blank">
-        Chat Sekarang
-    </a>
+  <!-- Trigger Chat Box -->
+  <button id="openChat" class="chat-trigger">
+    💬 Chat Sekarang
+  </button>
 </section>
+
+<!-- CHAT BOX -->
+<div class="chat-box" id="chatBox">
+  <div class="chat-header">
+  <div class="cs-info">
+    <img src="img/cs-avatar.png" alt="CS" class="cs-avatar">
+    <div>
+      <strong>Tim Support IT</strong>
+      <span class="cs-status">● Online</span>
+    </div>
+  </div>
+  <button id="closeChat">✕</button>
+</div>
+
+
+  <div class="chat-body" id="chatMessages"></div>
+
+  <div class="chat-input">
+    <input
+      type="text"
+      id="userName"
+      placeholder="Masukkan nama Anda..."
+    />
+    <button id="sendName">Kirim</button>
+  </div>
+
+  <div class="chat-footer">
+    <a
+      id="waLink"
+      target="_blank"
+      class="chat-wa"
+    >
+      Lanjut ke WhatsApp
+    </a>
+  </div>
+</div>
+
+
+
+<section class="sponsor fade">
+  <p class="sponsor-title">Supported by Tim IT</p>
+
+  <div class="sponsor-icons">
+  <a href="https://www.instagram.com/benyoriki?igsh=cGZkOXpuN2JyYjAy"
+     target="_blank"
+     class="icon ig"
+     aria-label="Instagram">
+    <img src="img/ig.png" alt="Instagram">
+  </a>
+
+  <a href="https://m.youtube.com/channel/UCc5tgrRwlCiE_VDRN5Qnjcw"
+     target="_blank"
+     class="icon yt"
+     aria-label="YouTube">
+    <img src="img/yt.png" alt="YouTube">
+  </a>
+
+  <a href="https://www.tiktok.com/@benyoriki"
+     target="_blank"
+     class="icon tt"
+     aria-label="TikTok">
+    <img src="img/tiktok.png" alt="TikTok">
+  </a>
+
+  <a href="https://www.facebook.com/benyo.hermawan?_rdc=1&_rdr#"
+     target="_blank"
+     class="icon fb"
+     aria-label="Facebook">
+    <img src="img/fb.png" alt="Facebook">
+  </a>
+</div>
+
+</section>
+
+
 
 <footer>
     <p>© 2026 M DAUD S.M | Sales Executive Marketing</p>
