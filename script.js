@@ -176,5 +176,14 @@ document.addEventListener("DOMContentLoaded", function () {
       waText.textContent = texts[i];
     }, 3000);
   }
+  
+  const closeChat = document.getElementById("closeChat");
+
+if (closeChat && chatBox) {
+  closeChat.addEventListener("click", () => {
+    chatBox.style.display = "none";
+  });
+}
+
 
 });
