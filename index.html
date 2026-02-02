@@ -34,22 +34,33 @@
 </header>
 
 
+
 <section id="home" class="hero">
-    <h1>Sales Executive Marketing</h1>
-    <p>Desain Rumah • Banner • Website • Aplikasi Android • Video Editor</p>
-<div class="cta-wa">
-  <a href="javascript:void(0)"
-     id="openChatFromCTA"
-     class="wa-animated">
-    <span class="wa-icon">💬</span>
-    <span class="wa-text" id="waText">Chat WhatsApp</span>
-  </a>
-</div>
+  <h1>Bantu Bisnis Anda Terlihat Profesional & Dipercaya</h1>
+  <p>
+    Desain Rumah • Website • Aplikasi Android • Video Editing  
+    <br>Solusi digital lengkap dengan respon cepat & konsultasi gratis
+  </p>
+
+  <div class="hero-stats">
+    <div><strong>100+</strong><span>Proyek</span></div>
+    <div><strong>&lt;5 Menit</strong><span>Respon</span></div>
+    <div><strong>Multi Jasa</strong><span>Satu Tim</span></div>
+	<p class="visitor-count">
+  👀 Telah dilihat <strong>1.200+</strong> kali
+</p>
 
 
+  </div>
 
-	
+  <div class="cta-wa">
+    <a href="javascript:void(0)" id="openChatFromCTA" class="wa-animated">
+      <span class="wa-icon">💬</span>
+      <span class="wa-text" id="waText">Konsultasi Gratis</span>
+    </a>
+  </div>
 </section>
+
 
 <section id="jasa" class="services">
     <h2>Layanan Kami</h2>
@@ -61,6 +72,18 @@
         <div class="card">🎬 Video Editing</div>
     </div>
 </section>
+
+<section class="why-us fade">
+  <h2>Kenapa Pilih Kami?</h2>
+
+  <div class="why-grid">
+    <div class="card">⚡ Respon cepat via WhatsApp</div>
+    <div class="card">🎯 Fokus hasil & kepuasan klien</div>
+    <div class="card">🔄 Revisi fleksibel</div>
+    <div class="card">🤝 Konsultasi GRATIS sebelum deal</div>
+  </div>
+</section>
+
 
 <section id="portfolio" class="portfolio fade">
     <h2>Hasil Pekerjaan</h2>
@@ -77,22 +100,70 @@
         <img src="img/hasil9.jpg" class="slide" alt="Hasil 9">
 		<img src="img/hasil10.jpg" class="slide" alt="Hasil 10">
 		<img src="img/hasil11.jpg" class="slide" alt="Hasil 11">
+		<img src="img/hasil12.jpg" class="slide" alt="Hasil 12">
 
         <button class="prev">❮</button>
         <button class="next">❯</button>
     </div>
 </section>
 
-<section id="kontak" class="contact fade">
-  <h2>Kontak Sales Executive</h2>
-  <p><strong>Nama:</strong> M DAUD S.M</p>
-  <p><strong>WhatsApp:</strong> 0856-9732-1423</p>
+<section class="testimoni fade">
+  <h2>Bukti Chat Konsumen</h2>
+  <p class="testi-sub">
+    Screenshot langsung dari percakapan WhatsApp klien
+  </p>
 
-  <!-- Trigger Chat Box -->
-  <button id="openChat" class="chat-trigger">
-    💬 Chat Sekarang
-  </button>
+  <div class="testi-gallery">
+    <img src="img/testi/chat1.jpg" alt="Testimoni 1" class="testi-img">
+    <img src="img/testi/chat2.jpg" alt="Testimoni 2" class="testi-img">
+    <img src="img/testi/chat3.jpg" alt="Testimoni 3" class="testi-img">
+    <img src="img/testi/chat4.jpg" alt="Testimoni 4" class="testi-img">
+  </div>
 </section>
+
+
+<section class="closing-cta fade">
+  <h2>Siap Mulai Proyek Anda?</h2>
+  <p>Konsultasi gratis • Tanpa komitmen • Respon cepat</p>
+
+<a href="javascript:void(0)" id="openChat" class="wa-animated">
+  💬 <span id="ctaText">Mulai Chat Sekarang</span>
+</a>
+
+</section>
+
+
+<section id="kontak" class="contact fade">
+  <h2>Hubungi Kami Sekarang</h2>
+  <p class="contact-sub">
+    Konsultasi gratis • Respon cepat • Tanpa komitmen
+  </p>
+
+  <div class="contact-card">
+    <div class="contact-info">
+      <p><strong>Sales Executive</strong></p>
+      <p>M DAUD S.M</p>
+      <p class="contact-wa">📱 0856-9732-1423</p>
+      <p class="contact-status">
+        <span class="dot"></span> Online setiap hari (08.00 – 18.00)
+      </p>
+    </div>
+
+    <div class="contact-action">
+      <button id="openChat" class="chat-trigger big">
+        💬 Konsultasi via WhatsApp
+      </button>
+
+      <p class="wa-counter soft">
+        🔔 Telah diklik <strong><span id="waCount">0</span></strong> kali
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+
 
 <!-- CHAT BOX -->
 <div class="chat-box" id="chatBox">
@@ -100,7 +171,7 @@
   <div class="cs-info">
     <img src="img/cs-avatar.png" alt="CS" class="cs-avatar">
     <div>
-      <strong>Tim Support IT</strong>
+      <strong>Sales Executive</strong>
       <span class="cs-status">● Online</span>
     </div>
   </div>
@@ -167,6 +238,30 @@
 
 </section>
 
+<section class="mini-dashboard fade">
+  <h3>📊 Statistik Interaksi</h3>
+  <p>CTA Siang: <strong><span id="ctaDay">0</span></strong></p>
+  <p>CTA Malam: <strong><span id="ctaNight">0</span></strong></p>
+</section>
+
+<section class="cta-chart fade">
+  <h3>📊 Aktivitas Klik CTA</h3>
+
+  <div class="bar">
+    <span>Siang</span>
+    <div class="bar-track">
+      <div id="barDay" class="bar-fill day"></div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <span>Malam</span>
+    <div class="bar-track">
+      <div id="barNight" class="bar-fill night"></div>
+    </div>
+  </div>
+</section>
+
 
 
 <footer>
@@ -174,5 +269,10 @@
 </footer>
 
 <script src="script.js"></script>
+<div id="lightbox" class="lightbox">
+  <span class="lightbox-close">✕</span>
+  <img class="lightbox-img" src="">
+</div>
+
 </body>
 </html>
