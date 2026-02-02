@@ -185,5 +185,172 @@ if (closeChat && chatBox) {
   });
 }
 
+/* ===== TRACKING KLIK WHATSAPP ===== */
+let waClicks = localStorage.getItem("waClicks") || 0;
+const waCountEl = document.getElementById("waCount");
+if (waCountEl) waCountEl.textContent = waClicks;
+
+function trackWA() {
+  waClicks++;
+  localStorage.setItem("waClicks", waClicks);
+  if (waCountEl) waCountEl.textContent = waClicks;
+}
+
+/* Semua tombol WA */
+document.querySelectorAll(
+  '#openChat, #openChatFromCTA, .chat-wa, .wa-animated'
+).forEach(btn => {
+  btn.addEventListener("click", trackWA);
+});
+
+
+/* ===== VISITOR COUNTER (LOCAL) ===== */
+let visits = localStorage.getItem("visits");
+
+if (!visits) {
+  visits = 1;
+  localStorage.setItem("visits", visits);
+} else {
+  visits = parseInt(visits) + 1;
+  localStorage.setItem("visits", visits);
+}
+
+const visitorEl = document.getElementById("visitorCount");
+if (visitorEl) visitorEl.textContent = visits;
+
+
+/* ===== TESTIMONI LIGHTBOX ===== */
+const testiImgs = document.querySelectorAll(".testi-img");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.querySelector(".lightbox-img");
+const lightboxClose = document.querySelector(".lightbox-close");
+
+testiImgs.forEach(img => {
+  img.addEventListener("click", () => {
+    lightboxImg.src = img.src;
+    lightbox.style.display = "flex";
+  });
+});
+
+lightboxClose?.addEventListener("click", () => {
+  lightbox.style.display = "none";
+});
+
+lightbox?.addEventListener("click", e => {
+  if (e.target === lightbox) {
+    lightbox.style.display = "none";
+  }
+});
+
+
+/* =================================================
+   CTA SMART LOGIC
+   - Weekday vs Weekend
+   - Day vs Night Tracking
+   - Night Click Alert
+================================================= */
+
+const ctaText = document.getElementById("ctaText");
+const ctaBtn  = document.getElementById("openChat");
+
+
+if (ctaText && ctaBtn) {
+
+  const now = new Date();
+  const hour = now.getHours();
+  const day  = now.getDay(); // 0 = Minggu, 6 = Sabtu
+
+  const isWeekend = (day === 0 || day === 6);
+  const isDayTime = (hour >= 8 && hour < 18);
+
+  /* ===== CTA TEXT LOGIC ===== */
+  let texts = [];
+
+  if (isWeekend) {
+    texts = [
+      "Konsultasi Weekend",
+      "Tinggalkan Pesan",
+      "Kami Balas Hari Kerja"
+    ];
+  } else if (isDayTime) {
+    texts = [
+      "Mulai Chat Sekarang",
+      "Konsultasi Gratis",
+      "Tanya Harga Sekarang"
+    ];
+  } else {
+    texts = [
+      "Tinggalkan Pesan",
+      "Chat Dibalas Besok",
+      "Konsultasi via WhatsApp"
+    ];
+  }
+
+  let i = 0;
+  ctaText.textContent = texts[0];
+
+  setInterval(() => {
+    i = (i + 1) % texts.length;
+    ctaText.style.animation = "none";
+    ctaText.offsetHeight;
+    ctaText.style.animation = "textIn 0.4s ease";
+    ctaText.textContent = texts[i];
+  }, 3000);
+
+  /* ===== TRACKING CTA DAY vs NIGHT ===== */
+  let ctaDayClicks   = parseInt(localStorage.getItem("ctaDayClicks")) || 0;
+  let ctaNightClicks = parseInt(localStorage.getItem("ctaNightClicks")) || 0;
+
+  ctaBtn.addEventListener("click", () => {
+
+    if (isDayTime) {
+      ctaDayClicks++;
+      localStorage.setItem("ctaDayClicks", ctaDayClicks);
+    } else {
+      ctaNightClicks++;
+      localStorage.setItem("ctaNightClicks", ctaNightClicks);
+
+      /* 🚨 ALERT JIKA KLIK MALAM */
+      alert(
+        "Terima kasih 🙏\n" +
+        "Saat ini di luar jam operasional.\n" +
+        "Pesan Anda akan kami balas besok."
+      );
+    }
+
+    console.log("CTA Siang:", ctaDayClicks);
+    console.log("CTA Malam:", ctaNightClicks);
+  });
+
+}
+
+/* ===== MINI DASHBOARD ===== */
+/* ===== CTA MINI GRAPH ===== */
+const stats = JSON.parse(localStorage.getItem("ctaClicks")) || {
+  day: 0,
+  night: 0
+};
+
+const total = stats.day + stats.night || 1;
+
+const dayPercent = Math.round((stats.day / total) * 100);
+const nightPercent = 100 - dayPercent;
+
+const barDay = document.getElementById("barDay");
+const barNight = document.getElementById("barNight");
+
+if (barDay && barNight) {
+  barDay.style.width = dayPercent + "%";
+  barNight.style.width = nightPercent + "%";
+}
+
+
+
 
 });
+
+if (window.innerWidth < 768) {
+  setTimeout(() => {
+    document.getElementById("openChatFromCTA")?.click();
+  }, 15000);
+}
