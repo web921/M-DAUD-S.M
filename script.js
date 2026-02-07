@@ -720,3 +720,114 @@ fogObserver.observe(document.body, {
   attributeFilter: ["class"]
 });
 
+window.addEventListener("scroll", () => {
+  document.querySelectorAll(".cloud").forEach((cloud, i) => {
+    cloud.style.transform =
+      `translateX(${window.scrollY * (0.15 + i * 0.05)}px)`;
+  });
+});
+
+/* ===============================
+   ☁️ CLOUD PARALLAX PREMIUM
+================================ */
+window.addEventListener("scroll", () => {
+  const clouds = document.querySelectorAll(".cloud");
+  clouds.forEach((cloud, i) => {
+    const speed = 0.15 + i * 0.08;
+    cloud.style.transform =
+      `translateX(${window.scrollY * speed}px)`;
+  });
+});
+
+/* ☀️ SUN PARALLAX */
+window.addEventListener("scroll", () => {
+  const sun = document.querySelector(".sun");
+  if (!sun) return;
+
+  sun.style.transform =
+    `translateX(${window.scrollY * 0.05}px)`;
+});
+
+/* ===============================
+   🌙 REAL MOON PHASE BY DATE
+================================ */
+function setMoonPhase() {
+  const moon = document.querySelector(".moon");
+  if (!moon) return;
+
+  const now = new Date();
+  const day = now.getDate(); // 1–31
+  const phase = day / 31;
+
+  let lightX = "30%";
+
+  if (phase < 0.25) lightX = "20%";       // sabit awal
+  else if (phase < 0.5) lightX = "35%";   // setengah
+  else if (phase < 0.75) lightX = "55%";  // cembung
+  else lightX = "50%";                    // purnama
+
+  moon.style.background = `
+    radial-gradient(
+      circle at ${lightX} 40%,
+      #ffffff 0%,
+      #f1f5f9 45%,
+      #cbd5f5 65%,
+      #020617 78%
+    )
+  `;
+}
+
+setMoonPhase();
+
+/* ===============================
+   🌞🌙 HERO TEXT DAY & NIGHT
+================================ */
+function updateHeroText() {
+  const title = document.getElementById("heroTitle");
+  const desc = document.getElementById("heroDesc");
+  if (!title || !desc) return;
+
+  const hour = new Date().getHours();
+  const isNight = hour >= 18 || hour < 6;
+
+  if (isNight) {
+    title.innerHTML = "Bangun Bisnis Digital Anda Tanpa Ribet";
+    desc.innerHTML = `
+      Website • Aplikasi • Desain • Video Editing<br>
+      Kami siap bantu Anda, bahkan di luar jam kerja
+    `;
+    document.body.classList.add("night-text");
+  } else {
+    title.innerHTML = "Bantu Bisnis Anda Terlihat Profesional & Dipercaya";
+    desc.innerHTML = `
+      Desain Rumah • Website • Aplikasi Android • Video Editing<br>
+      Solusi digital lengkap dengan respon cepat & konsultasi gratis
+    `;
+    document.body.classList.remove("night-text");
+  }
+}
+
+updateHeroText();
+setInterval(updateHeroText, 60000); // update tiap 1 menit
+
+/* ===============================
+   🌞🌙 HEADER DAY NIGHT AUTO
+================================ */
+function updateHeaderMode() {
+  const hour = new Date().getHours();
+  const isNight = hour >= 18 || hour < 6;
+
+  const icon = document.getElementById("darkIcon");
+
+  if (isNight) {
+    document.body.classList.add("dark");
+    if (icon) icon.textContent = "🌙";
+  } else {
+    document.body.classList.remove("dark");
+    if (icon) icon.textContent = "☀️";
+  }
+}
+
+updateHeaderMode();
+setInterval(updateHeaderMode, 60000);
+
