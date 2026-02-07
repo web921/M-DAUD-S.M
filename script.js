@@ -254,8 +254,70 @@ darkToggle.addEventListener("click", function (e) {
   setTimeout(() => ripple.remove(), 1400);
 });
 
+/* ================= HAMBURGER MENU ================= */
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.getElementById("navLinks");
+
+hamburger.addEventListener("click", () => {
+  navLinks.classList.toggle("show");
+  hamburger.classList.toggle("active");
+});
+
+window.addEventListener("scroll", () => {
+  if (navLinks.classList.contains("show")) {
+    navLinks.classList.remove("show");
+    hamburger.classList.remove("active");
+  }
+});
 
 
+document.querySelectorAll("#navLinks a").forEach(link => {
+  link.addEventListener("click", () => {
+    navLinks.classList.remove("show");
+  });
+});
+
+
+
+/* ===== HERO TEXT WORD ANIMATION ===== */
+const heroTitle = document.querySelector(".hero-split");
+
+if (heroTitle) {
+  const words = heroTitle.innerText.split(" ");
+  heroTitle.innerHTML = words
+    .map((word, i) =>
+      `<span style="animation-delay:${i * 0.08}s">${word}&nbsp;</span>`
+    )
+    .join("");
+}
+
+
+/* ===== ACTIVE MENU UNDERLINE ===== */
+document.querySelectorAll(".nav-links a").forEach(link => {
+  link.addEventListener("click", () => {
+    document
+      .querySelectorAll(".nav-links a")
+      .forEach(l => l.classList.remove("active"));
+
+    link.classList.add("active");
+  });
+});
+
+
+/* ===== HERO SUBTITLE AFTER TITLE ===== */
+const subtitle = document.querySelector(".hero-subtitle");
+
+if (subtitle) {
+  const wordCount = heroTitle
+    ? heroTitle.innerText.split(" ").length
+    : 10;
+
+  const delay = wordCount * 80 + 200;
+
+  setTimeout(() => {
+    subtitle.classList.add("show");
+  }, delay);
+}
   
   
 
