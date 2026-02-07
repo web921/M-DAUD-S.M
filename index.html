@@ -24,16 +24,28 @@
 
   <div class="logo" id="logoText">M DAUD S.M</div>
 
-  <nav>
+<nav class="nav">
+  <div class="nav-links" id="navLinks">
     <a href="#home">Home</a>
     <a href="#jasa">Jasa</a>
     <a href="#portfolio">Hasil</a>
     <a href="#kontak">Kontak</a>
+  </div>
 
+  <div class="nav-actions">
     <button id="darkToggle" class="dark-toggle" title="Mode Gelap / Terang">
       <span id="darkIcon">🌙</span>
     </button>
-  </nav>
+
+<button class="hamburger" id="hamburger" aria-label="Menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+  </div>
+</nav>
+
 
 </header>
 
@@ -53,26 +65,38 @@
 <!-- 🌙 MOON -->
 <div class="moon"></div>
 
-<h1 id="heroTitle">
+<h1 id="heroTitle" class="hero-split">
   Bantu Bisnis Anda Terlihat Profesional & Dipercaya
 </h1>
 
-<p id="heroDesc">
+
+<p id="heroDesc" class="hero-subtitle">
   Desain Rumah • Website • Aplikasi Android • Video Editing  
   <br>Solusi digital lengkap dengan respon cepat & konsultasi gratis
 </p>
 
 
+
+
   <div class="hero-stats">
-    <div><strong>100+</strong><span>Proyek</span></div>
-    <div><strong>&lt;5 Menit</strong><span>Respon</span></div>
-    <div><strong>Multi Jasa</strong><span>Satu Tim</span></div>
-	<p class="visitor-count">
+  <div class="stat">
+    <strong>100+</strong>
+    <span>Proyek</span>
+  </div>
+  <div class="stat">
+    <strong>&lt;5 Menit</strong>
+    <span>Respon</span>
+  </div>
+  <div class="stat">
+    <strong>Multi Jasa</strong>
+    <span>Satu Tim</span>
+  </div>
+</div>
+
+<p class="visitor-count">
   👀 Telah dilihat <strong>1.200+</strong> kali
 </p>
 
-
-  </div>
 
   <div class="cta-wa">
     <a href="javascript:void(0)" id="openChatFromCTA" class="wa-animated">
