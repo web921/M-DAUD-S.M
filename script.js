@@ -3,48 +3,62 @@ document.addEventListener("DOMContentLoaded", function () {
   /* =================================================
      AUTO THEME (SIANG / MALAM) — AMAN
   ================================================= */
-  function setAutoTheme() {
-    const hour = new Date().getHours();
-    if (hour >= 18 || hour < 6) {
-      document.body.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.body.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }
+/* =================================================
+   🌗 AUTO DARK MODE (FINAL STABLE VERSION)
+================================================= */
 
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-  } else if (savedTheme === "light") {
-    document.body.classList.remove("dark");
-  } else {
-    setAutoTheme();
-  }
+let manualOverride = false;
+let overrideTimer = null;
 
-  /* Toggle manual */
+function applyThemeByTime() {
+  if (manualOverride) return;
+
+  const hour = new Date().getHours();
   const darkToggle = document.getElementById("darkToggle");
-  darkToggle?.addEventListener("click", () => {
-    function applyTimeMode() {
-  const phase = getTimePhase();
+  const icon = document.getElementById("darkIcon");
 
-  document.body.classList.toggle("dark", phase === "night");
-  document.body.setAttribute("data-time", phase);
+  const isNight = hour >= 18 || hour < 6;
 
-  updateSky();
-  updateSunFlare();
-  applyMoonPhaseByDate();
+  if (isNight) {
+    document.body.classList.add("dark");
+    if (icon) icon.textContent = "☀️";
+  } else {
+    document.body.classList.remove("dark");
+    if (icon) icon.textContent = "🌙";
+  }
 }
 
-	document.body.classList.toggle("dark");
-    localStorage.setItem(
-      "theme",
-      document.body.classList.contains("dark") ? "dark" : "light"
-    );
-    darkToggle.textContent =
-      document.body.classList.contains("dark") ? "☀️" : "🌙";
-  });
+/* Jalankan saat pertama load */
+applyThemeByTime();
+
+/* Update tiap 1 menit */
+setInterval(applyThemeByTime, 60000);
+
+/* Manual Toggle */
+const darkToggle = document.getElementById("darkToggle");
+
+darkToggle?.addEventListener("click", function () {
+  manualOverride = true;
+
+  document.body.classList.toggle("dark");
+
+  const isDark = document.body.classList.contains("dark");
+  const icon = document.getElementById("darkIcon");
+
+  if (icon) icon.textContent = isDark ? "☀️" : "🌙";
+
+  /* Kembali ke auto setelah 1 menit */
+  clearTimeout(overrideTimer);
+  overrideTimer = setTimeout(() => {
+    manualOverride = false;
+    applyThemeByTime();
+  }, 10000);
+});
+
+
+
+
+
 
   /* =================================================
      SLIDER PORTFOLIO
@@ -717,10 +731,7 @@ moonObserver.observe(document.body, {
   attributeFilter: ["class"]
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  // semua kode kamu
-  // ⬇️ KODE KABUT DITEMPEL DI SINI
-});
+
 
 /* =================================================
    🌫️ NIGHT FOG EFFECT
@@ -872,24 +883,5 @@ function updateHeroText() {
 updateHeroText();
 setInterval(updateHeroText, 60000); // update tiap 1 menit
 
-/* ===============================
-   🌞🌙 HEADER DAY NIGHT AUTO
-================================ */
-function updateHeaderMode() {
-  const hour = new Date().getHours();
-  const isNight = hour >= 18 || hour < 6;
 
-  const icon = document.getElementById("darkIcon");
-
-  if (isNight) {
-    document.body.classList.add("dark");
-    if (icon) icon.textContent = "🌙";
-  } else {
-    document.body.classList.remove("dark");
-    if (icon) icon.textContent = "☀️";
-  }
-}
-
-updateHeaderMode();
-setInterval(updateHeaderMode, 60000);
 
