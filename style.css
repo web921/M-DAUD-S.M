@@ -2749,3 +2749,50 @@ body.dark-mode .badge {
 .wa-text {
   transition: opacity 0.3s ease-in-out;
 }
+
+/* =================================
+   FIX NAV SHIFT MOBILE
+================================= */
+
+html, body {
+  overflow-x: hidden;
+}
+
+/* Pastikan nav tidak melebar */
+.nav {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Lock menu mobile */
+@media (max-width: 768px) {
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+    background: var(--bg-color);
+    flex-direction: column;
+    padding-top: 80px;
+    transition: right 0.3s ease;
+  }
+
+  .nav-links.active {
+    right: 0;
+  }
+
+  /* Hamburger tidak bikin overflow */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hamburger {
+    width: 30px;
+  }
+}
+
