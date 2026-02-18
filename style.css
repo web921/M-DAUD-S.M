@@ -1859,26 +1859,45 @@ header, .card, .contact-card {
    ?? PREMIUM SUN SYSTEM
 ================================ */
 
+/* ===============================
+   ?? PREMIUM REALISTIC SUN
+================================ */
+
 .sun {
   position: absolute;
   top: 12%;
-  left: -120px;
-  width: 160px;
-  height: 160px;
+  left: -160px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    #fff7cc 0%,
-    #fde047 40%,
-    #f59e0b 65%,
-    #ea580c 78%
-  );
+  z-index: 0;
+
+  background:
+    radial-gradient(circle at 30% 30%, #fffbe6 0%, #fde047 35%, #f59e0b 60%, #ea580c 80%);
+
   box-shadow:
     0 0 60px rgba(253,224,71,0.9),
-    0 0 120px rgba(249,115,22,0.6);
-  animation: sunMove 120s linear infinite;
-  z-index: 0;
+    0 0 120px rgba(249,115,22,0.7),
+    0 0 200px rgba(249,115,22,0.4);
+
+  animation: sunMove 160s linear infinite;
 }
+
+/* Solar glow pulse */
+.sun::after {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(253,224,71,0.35), transparent 70%);
+  animation: sunGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes sunGlow {
+  from { transform: scale(1); opacity: 0.7; }
+  to   { transform: scale(1.1); opacity: 1; }
+}
+
 
 @keyframes sunMove {
   from {
@@ -1894,25 +1913,189 @@ body.dark .sun {
   display: none;
 }
 
-/* ===============================
-   ?? REAL MOON
-================================ */
+/* =================================
+   ?? ANIMATED MOON PHASE
+================================= */
 
 .moon {
   position: absolute;
-  top: 14%;
-  left: -140px;
-  width: 140px;
-  height: 140px;
+  top: 12%;
+  left: -160px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
-  background: #f8fafc;
-  box-shadow:
-    0 0 30px rgba(226,232,240,0.6),
-    inset -12px 0 18px rgba(0,0,0,0.35);
-  animation: moonMove 140s linear infinite;
-  z-index: 0;
   display: none;
+  z-index: 0;
+  overflow: hidden;
+
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e5e7eb 60%, #cbd5e1 100%);
+
+  box-shadow:
+    0 0 40px rgba(226,232,240,0.6),
+    0 0 100px rgba(148,163,184,0.35);
+
+  animation: 
+    moonMove 220s linear infinite,
+    moonPhase 30s ease-in-out infinite;
 }
+
+/* SHADOW PHASE LAYER */
+.moon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #020617;
+  animation: phaseShift 30s ease-in-out infinite;
+}
+
+/* Gerakan bulan */
+@keyframes moonMove {
+  from { left: -160px; }
+  to   { left: 120%; }
+}
+
+/* Efek cahaya naik turun halus */
+@keyframes moonPhase {
+  0%   { box-shadow: 0 0 40px rgba(226,232,240,0.6), 0 0 100px rgba(148,163,184,0.35); }
+  50%  { box-shadow: 0 0 25px rgba(226,232,240,0.4), 0 0 60px rgba(148,163,184,0.25); }
+  100% { box-shadow: 0 0 40px rgba(226,232,240,0.6), 0 0 100px rgba(148,163,184,0.35); }
+}
+
+/* FASE BULAN BERUBAH */
+@keyframes phaseShift {
+  0%   { right: -100%; }   /* Full moon */
+  25%  { right: -40%; }    /* Half */
+  50%  { right: -10%; }    /* Crescent */
+  75%  { right: -40%; }    /* Half lagi */
+  100% { right: -100%; }   /* Full lagi */
+}
+
+
+/* Shadow untuk half phase */
+.moon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -40%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #020617;
+}
+
+
+.moon-glow {
+  position: absolute;
+  inset: -50px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+  z-index: -1;
+}
+
+
+/* Crater effect */
+.moon::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background: rgba(148,163,184,0.35);
+  border-radius: 50%;
+  top: 35px;
+  left: 50px;
+  box-shadow:
+    40px 20px rgba(148,163,184,0.25),
+    -30px 45px rgba(148,163,184,0.2);
+}
+
+/* Halo lembut */
+.moon::after {
+  content: "";
+  position: absolute;
+  inset: -35px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(226,232,240,0.2), transparent 70%);
+}
+
+body.dark .hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#ffffff 1px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: 0.06;
+  z-index: 1;
+}
+
+/* =================================
+   ?? REALISTIC STAR FIELD
+================================= */
+
+body.dark .hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 70% 60%, #fff, transparent),
+    radial-gradient(1px 1px at 40% 80%, #fff, transparent),
+    radial-gradient(2px 2px at 85% 20%, #fff, transparent),
+    radial-gradient(1px 1px at 15% 75%, #fff, transparent);
+
+  opacity: 0.6;
+  animation: starTwinkle 4s infinite alternate;
+}
+
+@keyframes starTwinkle {
+  from { opacity: 0.4; }
+  to   { opacity: 0.8; }
+}
+
+/* =================================
+   ?? SHOOTING STAR
+================================= */
+
+.shooting-star {
+  position: absolute;
+  top: 20%;
+  left: -150px;
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, #fff, transparent);
+  transform: rotate(25deg);
+  opacity: 0;
+  z-index: 2;
+}
+
+body.dark .shooting-star {
+  animation: shoot 8s infinite;
+}
+
+@keyframes shoot {
+  0% {
+    opacity: 0;
+    transform: translateX(0) translateY(0) rotate(25deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  30% {
+    transform: translateX(800px) translateY(200px) rotate(25deg);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
 
 @keyframes moonMove {
   from {
@@ -2378,6 +2561,54 @@ body.dark .price {
   margin-bottom: 20px;
 }
 
+.pricing-card {
+  position: relative;
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.pricing-card:hover {
+  transform: translateY(-8px);
+}
+
+.highlight {
+  border: 2px solid #00b894;
+  transform: scale(1.05);
+}
+
+.badge {
+  position: absolute;
+  top: -12px;
+  right: 15px;
+  background: #ff4757;
+  color: white;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.badge.promo {
+  background: #00b894;
+}
+
+.pricing-note {
+  margin-top: 40px;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.services-sub {
+  margin-bottom: 30px;
+  color: #555;
+}
+
+
 .btn-price {
   display: inline-block;
   padding: 8px 18px;
@@ -2391,4 +2622,130 @@ body.dark .price {
 
 .btn-price:hover {
   opacity: 0.8;
+}
+
+/* =========================
+   DARK MODE FIX
+========================= */
+
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode p,
+body.dark-mode li,
+body.dark-mode span {
+  color: #f1f1f1;
+}
+
+/* Pricing Card Dark Mode */
+body.dark-mode .pricing-card {
+  background: #1e1e1e;
+  color: #ffffff;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .pricing-note {
+  background: #1a1a1a;
+  color: #dddddd;
+}
+
+/* Tombol */
+body.dark-mode .btn-price {
+  background: #00b894;
+  color: white;
+}
+
+body.dark-mode .btn-price:hover {
+  background: #00a383;
+}
+
+/* =========================
+   DARK MODE TOTAL FIX
+========================= */
+
+body.dark,
+body.dark-mode {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+/* Semua teks jadi terang */
+body.dark *,
+body.dark-mode * {
+  color: #ffffff !important;
+}
+
+/* Card */
+body.dark .pricing-card,
+body.dark-mode .pricing-card {
+  background: #1e1e1e !important;
+  border: 1px solid #2c2c2c;
+}
+
+/* Note box */
+body.dark .pricing-note,
+body.dark-mode .pricing-note {
+  background: #1a1a1a !important;
+}
+
+/* Badge tetap kontras */
+body.dark .badge,
+body.dark-mode .badge {
+  color: #ffffff !important;
+}
+
+/* Glow Animation */
+.glow {
+  animation: glowEffect 1.5s infinite alternate;
+}
+
+@keyframes glowEffect {
+  from {
+    box-shadow: 0 0 5px #00b894;
+  }
+  to {
+    box-shadow: 0 0 20px #00ffcc;
+  }
+}
+
+/* Slot Counter */
+.slot-counter {
+  background: #fff3cd;
+  color: #856404;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+/* Mini Testimoni */
+.mini-testimoni {
+  margin-top: 40px;
+  text-align: center;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.highlight {
+  border: 2px solid #00b894;
+  transform: scale(1.05);
+}
+
+.wa-text {
+  transition: opacity 0.3s ease-in-out;
 }
