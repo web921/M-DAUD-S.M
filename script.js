@@ -272,24 +272,25 @@ darkToggle.addEventListener("click", function (e) {
 const hamburger = document.getElementById("hamburger");
 const navLinks = document.getElementById("navLinks");
 
-hamburger.addEventListener("click", () => {
-  navLinks.classList.toggle("show");
-  hamburger.classList.toggle("active");
-});
+if (hamburger && navLinks) {
+  hamburger.addEventListener("click", () => {
+    navLinks.classList.toggle("show");
+    hamburger.classList.toggle("active");
+  });
 
-window.addEventListener("scroll", () => {
-  if (navLinks.classList.contains("show")) {
+  window.addEventListener("scroll", () => {
     navLinks.classList.remove("show");
     hamburger.classList.remove("active");
-  }
-});
-
-
-document.querySelectorAll("#navLinks a").forEach(link => {
-  link.addEventListener("click", () => {
-    navLinks.classList.remove("show");
   });
-});
+
+  document.querySelectorAll("#navLinks a").forEach(link => {
+    link.addEventListener("click", () => {
+      navLinks.classList.remove("show");
+      hamburger.classList.remove("active");
+    });
+  });
+}
+
 
 
 
@@ -920,6 +921,9 @@ setInterval(updateHeroText, 60000); // update tiap 1 menit
   }, 3000);
 
 })();
+
+
+
 
 
 
