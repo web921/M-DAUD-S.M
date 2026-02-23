@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
      AUTO THEME (SIANG / MALAM) — AMAN
   ================================================= */
 /* =================================================
-   ?? AUTO DARK MODE (FINAL STABLE VERSION)
+   🌗 AUTO DARK MODE (FINAL STABLE VERSION)
 ================================================= */
 
 let manualOverride = false;
@@ -21,10 +21,10 @@ function applyThemeByTime() {
 
   if (isNight) {
     document.body.classList.add("dark");
-    if (icon) icon.textContent = "??";
+    if (icon) icon.textContent = "☀️";
   } else {
     document.body.classList.remove("dark");
-    if (icon) icon.textContent = "??";
+    if (icon) icon.textContent = "🌙";
   }
 }
 
@@ -45,7 +45,7 @@ darkToggle?.addEventListener("click", function () {
   const isDark = document.body.classList.contains("dark");
   const icon = document.getElementById("darkIcon");
 
-  if (icon) icon.textContent = isDark ? "??" : "??";
+  if (icon) icon.textContent = isDark ? "☀️" : "🌙";
 
   /* Kembali ke auto setelah 1 menit */
   clearTimeout(overrideTimer);
@@ -123,13 +123,13 @@ darkToggle?.addEventListener("click", function () {
   function openChatBox() {
     chatBox.style.display = "flex";
     chatMessages.innerHTML = "";
-    addMessage(`?? ${getGreeting()}!`);
+    addMessage(`👋 ${getGreeting()}!`);
     setTimeout(() => {
       const hour = new Date().getHours();
       if (hour < 8 || hour >= 18) {
-        addMessage("Saat ini kami sedang offline ?? Pesan akan dibalas besok.");
+        addMessage("Saat ini kami sedang offline 🙏 Pesan akan dibalas besok.");
       } else {
-        addMessage("Kami online dan siap membantu ??");
+        addMessage("Kami online dan siap membantu 😊");
       }
     }, 700);
   }
@@ -141,7 +141,7 @@ darkToggle?.addEventListener("click", function () {
   sendNameBtn?.addEventListener("click", () => {
     const name = userNameInput.value.trim();
     if (!name) return;
-    addMessage(`Baik ${name}, silakan lanjut ke WhatsApp ??`);
+    addMessage(`Baik ${name}, silakan lanjut ke WhatsApp 🙏`);
     waLink.href =
       "https://wa.me/6285697321423?text=" +
       encodeURIComponent(`Halo, saya ${name}. Saya tertarik dan ingin bertanya.`);
@@ -150,43 +150,43 @@ darkToggle?.addEventListener("click", function () {
 });
 
 /* =================================================
-   ?? ? ?? SUN / MOON + SKY ANIMATION (PURE JS)
+   🌞 → 🌙 SUN / MOON + SKY ANIMATION (PURE JS)
 ================================================= */
 
 /* =================================================
-   ? STARS (MALAM)
+   ✨ STARS (MALAM)
 ================================================= */
 
 /* =================================================
-   ?? CLOUDS (SIANG)
+   ☁️ CLOUDS (SIANG)
 ================================================= */
 
 /* =================================================
-   ?? MOON PHASE (SABIT)
+   🌙 MOON PHASE (SABIT)
 ================================================= */
 
 /* =================================================
-   ?? SYNC THEME
+   🔁 SYNC THEME
 ================================================= */
 
 /* =================================================
-   ?? SHOOTING STAR (MALAM)
+   🌠 SHOOTING STAR (MALAM)
 ================================================= */
 
 /* =================================================
-   ?? CLOUD PARALLAX (3 LAYER)
+   ☁️ CLOUD PARALLAX (3 LAYER)
 ================================================= */
 
 /* =================================================
-   ?? MOON PHASE (BERDASARKAN TANGGAL)
+   🌙 MOON PHASE (BERDASARKAN TANGGAL)
 ================================================= */
 
 /* =================================================
-   ??? NIGHT FOG EFFECT
+   🌫️ NIGHT FOG EFFECT
 ================================================= */
 
 /* ===============================
-   ???? HERO TEXT DAY & NIGHT
+   🌞🌙 HERO TEXT DAY & NIGHT
 ================================ */
 
 /* ===============================
@@ -199,11 +199,11 @@ darkToggle?.addEventListener("click", function () {
   if (!button) return;
 
   const texts = [
-    "?? Konsultasi Gratis",
-    "?? Amankan Slot Anda",
-    "?? Tanya Harga Sekarang",
-    "?? Mulai Project Hari Ini",
-    "?? Mulai Dari 100 Ribuan"
+    "💬 Konsultasi Gratis",
+    "🔥 Amankan Slot Anda",
+    "💰 Tanya Harga Sekarang",
+    "🚀 Mulai Project Hari Ini",
+    "💸 Mulai Dari 100 Ribuan"
   ];
 
   let index = 0;
