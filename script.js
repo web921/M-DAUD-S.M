@@ -928,20 +928,8 @@ setInterval(updateHeroText, 60000); // update tiap 1 menit
 
 })();
 
-let cloudsInitialized = false;
 
-function spawnParallaxClouds() {
-  if (cloudsInitialized) return;
-  cloudsInitialized = true;
 
-  cloudLayers.forEach((layer, i) => {
-    setInterval(() => {
-      if (!document.body.classList.contains("dark")) {
-        createCloud(layer, 70 - i * 20, 1 - i * 0.2);
-      }
-    }, 14000 + i * 5000);
-  });
-}
 
 
 
