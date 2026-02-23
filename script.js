@@ -14,17 +14,16 @@ function applyThemeByTime() {
   if (manualOverride) return;
 
   const hour = new Date().getHours();
-  const darkToggle = document.getElementById("darkToggle");
   const icon = document.getElementById("darkIcon");
 
   const isNight = hour >= 18 || hour < 6;
 
   if (isNight) {
     document.body.classList.add("dark");
-    if (icon) icon.textContent = "â˜€ï¸";
+    if (icon) icon.textContent = "\u2600\uFE0F"; // ☀️
   } else {
     document.body.classList.remove("dark");
-    if (icon) icon.textContent = "ðŸŒ™";
+    if (icon) icon.textContent = "\uD83C\uDF19"; // 🌙
   }
 }
 
@@ -45,14 +44,14 @@ darkToggle?.addEventListener("click", function () {
   const isDark = document.body.classList.contains("dark");
   const icon = document.getElementById("darkIcon");
 
-  if (icon) icon.textContent = isDark ? "â˜€ï¸" : "ðŸŒ™";
+  if (icon) icon.textContent = isDark ? "☀️" : "🌙";
 
   /* Kembali ke auto setelah 1 menit */
   clearTimeout(overrideTimer);
   overrideTimer = setTimeout(() => {
     manualOverride = false;
     applyThemeByTime();
-  }, 10000);
+  }, 60000); // 1 menit = 60000ms
 });
 
 
@@ -125,32 +124,38 @@ darkToggle?.addEventListener("click", function () {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  function openChatBox() {
-    chatBox.style.display = "flex";
-    chatMessages.innerHTML = "";
-    addMessage(`ðŸ‘‹ ${getGreeting()}!`);
-    setTimeout(() => {
-      const hour = new Date().getHours();
-      if (hour < 8 || hour >= 18) {
-        addMessage("Saat ini kami sedang offline ðŸ™ Pesan akan dibalas besok.");
-      } else {
-        addMessage("Kami online dan siap membantu ðŸ˜Š");
-      }
-    }, 700);
-  }
+function openChatBox() {
+  chatBox.style.display = "flex";
+  chatMessages.innerHTML = "";
+
+  addMessage(`👋 ${getGreeting()}!`);
+
+  setTimeout(() => {
+    const hour = new Date().getHours();
+
+    if (hour < 8 || hour >= 18) {
+      addMessage("Saat ini kami sedang offline 🙏 Pesan akan dibalas besok.");
+    } else {
+      addMessage("Kami online dan siap membantu 😊");
+    }
+
+  }, 700);
+}
 
   openChat?.addEventListener("click", openChatBox);
   openChatFromCTA?.addEventListener("click", openChatBox);
   closeChat?.addEventListener("click", () => chatBox.style.display = "none");
 
-  sendNameBtn?.addEventListener("click", () => {
-    const name = userNameInput.value.trim();
-    if (!name) return;
-    addMessage(`Baik ${name}, silakan lanjut ke WhatsApp ðŸ™`);
-    waLink.href =
-      "https://wa.me/6285697321423?text=" +
-      encodeURIComponent(`Halo, saya ${name}. Saya tertarik dan ingin bertanya.`);
-  });
+sendNameBtn?.addEventListener("click", () => {
+  const name = userNameInput.value.trim();
+  if (!name) return;
+
+  addMessage(`Baik ${name}, silakan lanjut ke WhatsApp 🙏`);
+
+  waLink.href =
+    "https://wa.me/6285697321423?text=" +
+    encodeURIComponent(`Halo, saya ${name}. Saya tertarik dan ingin bertanya.`);
+});
 
   /* =================================================
      TESTIMONI LIGHTBOX
@@ -870,14 +875,14 @@ function updateHeroText() {
   if (isNight) {
     title.innerHTML = "Bangun Bisnis Digital Anda Tanpa Ribet";
     desc.innerHTML = `
-      Website â€¢ Aplikasi â€¢ Desain â€¢ Video Editing<br>
+      Website &bull; Aplikasi &bull; Desain &bull; Video Editing<br>
       Kami siap bantu Anda, bahkan di luar jam kerja
     `;
     document.body.classList.add("night-text");
   } else {
     title.innerHTML = "Bantu Bisnis Anda Terlihat Profesional & Dipercaya";
     desc.innerHTML = `
-      Desain Rumah â€¢ Website â€¢ Aplikasi Android â€¢ Video Editing<br>
+      Desain Rumah &bull; Website &bull; Aplikasi Android &bull; Video Editing<br>
       Solusi digital lengkap dengan respon cepat & konsultasi gratis
     `;
     document.body.classList.remove("night-text");
@@ -921,6 +926,7 @@ setInterval(updateHeroText, 60000); // update tiap 1 menit
   }, 3000);
 
 })();
+
 
 
 
