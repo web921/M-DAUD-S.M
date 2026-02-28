@@ -3017,3 +3017,20 @@ html, body {
   width:100%;
   border:none;
 }
+
+/* FILTER BUTTON - MODE GELAP */
+body.dark .filter-buttons button{
+  color: #ffffff;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+body.dark .filter-buttons button:hover{
+  background: rgba(255,255,255,0.15);
+}
+
+body.dark .filter-buttons button.active{
+  background: #25D366;
+  color: #fff;
+  border-color: #25D366;
+}
