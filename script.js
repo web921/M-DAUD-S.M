@@ -28,6 +28,29 @@ function applyThemeByTime() {
   }
 }
 
+// FILTER PORTFOLIO
+const buttons = document.querySelectorAll(".filter-buttons button");
+const items = document.querySelectorAll(".portfolio-item");
+
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => {
+
+    buttons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const filter = btn.getAttribute("data-filter");
+
+    items.forEach(item => {
+      if(filter === "all" || item.classList.contains(filter)){
+        item.style.display = "block";
+      } else {
+        item.style.display = "none";
+      }
+    });
+
+  });
+});
+
 /* Jalankan saat pertama load */
 applyThemeByTime();
 
@@ -221,3 +244,4 @@ darkToggle?.addEventListener("click", function () {
   }, 3000);
 
 })();
+
