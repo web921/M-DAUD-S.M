@@ -3,451 +3,561 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- Title -->
 <title>M DAUD S.M | Sales Executive Marketing</title>
-
-<!-- Primary Meta -->
 <meta name="description" content="Desain Rumah • Website • Aplikasi Android. Konsultasi Gratis & Respon Cepat < 5 Menit.">
-    <meta name="keywords" content="Sales Executive, Desain Rumah, Website, Aplikasi Android">
-
-<!-- Open Graph (WA / Facebook) -->
+<meta name="keywords" content="Sales Executive, Desain Rumah, Website, Aplikasi Android">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://web921.github.io/M-DAUD-S.M">
 <meta property="og:title" content="M DAUD S.M | Sales Executive Marketing">
 <meta property="og:description" content="Desain Rumah • Website • Aplikasi Android. Konsultasi Gratis & Respon Cepat < 5 Menit.">
 <meta property="og:image" content="https://web921.github.io/M-DAUD-S.M/img/preview.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:title" content="M DAUD S.M | Sales Executive Marketing">
-<meta property="twitter:description" content="Desain Rumah • Website • Aplikasi Android. Konsultasi Gratis & Respon Cepat < 5 Menit.">
-<meta property="twitter:image" content="https://web921.github.io/M-DAUD-S.M/img/preview.jpg">
-
-<!-- Icon -->
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="stylesheet" href="style.css">
-	<link rel="stylesheet" href="style.css">
-	<link rel="icon" href="img/favicon.png" type="image/png">
+<link rel="icon" href="img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="img/favicon.png">
-<link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
 
+<!-- NOISE TEXTURE OVERLAY -->
+<div class="noise-overlay"></div>
 
+<!-- CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ===== HEADER ===== -->
 <header id="mainHeader">
-
-  <div class="logo" id="logoText">M DAUD S.M</div>
-
-<nav class="nav">
-  <div class="nav-links" id="navLinks">
-    <a href="#home">Home</a>
-    <a href="#jasa">Jasa</a>
-    <a href="#portfolio">Hasil</a>
-    <a href="#kontak">Kontak</a>
+  <div class="logo" id="logoText">
+    <span class="logo-m">M</span> DAUD S.M
   </div>
-
-  <div class="nav-actions">
-    <button id="darkToggle" class="dark-toggle" title="Mode Gelap / Terang">
-      <span id="darkIcon">🌙</span>
-    </button>
-
-<button class="hamburger" id="hamburger" aria-label="Menu">
-  <span></span>
-  <span></span>
-  <span></span>
-</button>
-
-  </div>
-  
-  
-</nav>
-
-
+  <nav class="nav">
+    <div class="nav-links" id="navLinks">
+      <a href="#home" class="nav-link">Home</a>
+      <a href="#portfolio" class="nav-link">Portfolio</a>
+      <a href="#jasa" class="nav-link">Layanan</a>
+      <a href="#kontak" class="nav-link">Kontak</a>
+    </div>
+    <div class="nav-actions">
+      <button id="darkToggle" class="dark-toggle" title="Mode Gelap / Terang" aria-label="Toggle Dark Mode">
+        <span id="darkIcon">🌙</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
 </header>
 
-
-
-
+<!-- ===== HERO ===== -->
 <section id="home" class="hero">
+  <div class="hero-bg-orb orb1"></div>
+  <div class="hero-bg-orb orb2"></div>
+  <div class="hero-bg-orb orb3"></div>
 
-<!-- 🌤️ PREMIUM CLOUD LAYER -->
-<div class="clouds">
-  <img src="img/cloud1.png" class="cloud cloud1">
-  <img src="img/cloud2.png" class="cloud cloud2">
-  <img src="img/cloud3.png" class="cloud cloud3">
-</div>
+  <!-- SKY ELEMENTS -->
+  <div class="sky-elements" id="skyElements">
+    <!-- Arc track (decorative) -->
+    <div class="arc-track"></div>
 
-<div class="sun"></div>
-<!-- 🌙 MOON -->
-<div class="moon"></div>
-<div class="shooting-star"></div>
+    <!-- Sun -->
+    <div class="sun" id="sunEl">
+      <div class="sun-core"></div>
+      <div class="sun-ray"></div><div class="sun-ray"></div>
+      <div class="sun-ray"></div><div class="sun-ray"></div>
+      <div class="sun-ray"></div><div class="sun-ray"></div>
+      <div class="sun-ray"></div><div class="sun-ray"></div>
+    </div>
 
-<h1 id="heroTitle" class="hero-split">
-  Bantu Bisnis Anda Terlihat Profesional & Dipercaya
-</h1>
+    <!-- Moon -->
+    <div class="moon" id="moonEl">
+      <div class="moon-crater c1"></div>
+      <div class="moon-crater c2"></div>
+      <div class="moon-crater c3"></div>
+    </div>
 
+    <!-- Stars -->
+    <div class="stars-container" id="starsContainer"></div>
+    <div class="shooting-star" id="shootingStar"></div>
 
-<p id="heroDesc" class="hero-subtitle">
-  Desain Rumah • Website • Aplikasi Android  
-  <br>Solusi digital lengkap dengan respon cepat & konsultasi gratis
-</p>
-
-
-
-
-
-  <div class="hero-stats">
-  <div class="stat">
-    <strong>100+</strong>
-    <span>Proyek</span>
+    <!-- Cloud particles (CSS only, no images needed) -->
+    <div class="clouds-wrap" id="cloudsWrap">
+      <div class="cp-cloud" style="--spd:28s;--y:12%;--sc:1.1;--op:0.82;--delay:-4s"></div>
+      <div class="cp-cloud" style="--spd:38s;--y:22%;--sc:0.75;--op:0.65;--delay:-14s"></div>
+      <div class="cp-cloud" style="--spd:22s;--y:8%;--sc:0.9;--op:0.55;--delay:-8s"></div>
+      <div class="cp-cloud" style="--spd:45s;--y:30%;--sc:1.3;--op:0.7;--delay:-22s"></div>
+      <div class="cp-cloud" style="--spd:32s;--y:18%;--sc:0.6;--op:0.5;--delay:-6s"></div>
+      <div class="cp-cloud" style="--spd:50s;--y:36%;--sc:1.0;--op:0.4;--delay:-30s"></div>
+    </div>
   </div>
-  <div class="stat">
-    <strong>&lt;5 Menit</strong>
-    <span>Respon</span>
+
+  <div class="hero-content">
+    <div class="hero-badge" id="heroBadge">
+      <span class="badge-dot"></span>
+      <span>Available for Projects 2026</span>
+    </div>
+
+    <h1 class="hero-title" id="heroTitle">
+      Bantu Bisnis Anda<br>
+      <span class="hero-gradient-text" id="heroTypewriter"></span>
+    </h1>
+
+    <p class="hero-subtitle" id="heroDesc">
+      Desain Rumah • Website • Aplikasi Android
+      <br>Solusi digital lengkap, respon cepat & konsultasi gratis
+    </p>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <strong class="stat-num" data-target="100">0</strong><span class="stat-plus">+</span>
+        <span class="stat-label">Proyek</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <strong>&lt;5</strong>
+        <span class="stat-label">Menit Respon</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <strong class="stat-num" data-target="1200">0</strong><span class="stat-plus">+</span>
+        <span class="stat-label">Pengunjung</span>
+      </div>
+    </div>
+
+    <div class="hero-cta-group">
+      <button id="openChatFromCTA" class="btn-primary cta-pulse">
+        <span class="btn-icon">💬</span>
+        <span class="btn-text" id="ctaBtnText">Konsultasi Gratis</span>
+      </button>
+      <a href="#portfolio" class="btn-outline">Lihat Portfolio</a>
+    </div>
   </div>
-  <div class="stat">
-    <strong>Multi Jasa</strong>
-    <span>Satu Tim</span>
-  </div>
-</div>
 
-<p class="visitor-count">
-  👀 Telah dilihat <strong>1.200+</strong> kali
-</p>
-
-
-  <div class="cta-wa">
-    <a href="javascript:void(0)" id="openChatFromCTA" class="wa-animated">
-      <span class="wa-icon">💬</span>
-      <span class="wa-text" id="waText">Konsultasi Gratis</span>
-    </a>
+  <div class="hero-scroll-hint">
+    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+    <span>Scroll</span>
   </div>
 </section>
 
-<!-- HASIL WEBSITE -->
-<section class="portfolio-filter fade">
+<!-- ===== MARQUEE STRIP ===== -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>🏠 Desain Rumah</span>
+    <span>🌐 Website Profesional</span>
+    <span>📱 Aplikasi Android</span>
+    <span>⚡ Respon Cepat</span>
+    <span>🎯 Hasil Berkualitas</span>
+    <span>💰 Harga Terjangkau</span>
+    <span>🏠 Desain Rumah</span>
+    <span>🌐 Website Profesional</span>
+    <span>📱 Aplikasi Android</span>
+    <span>⚡ Respon Cepat</span>
+    <span>🎯 Hasil Berkualitas</span>
+    <span>💰 Harga Terjangkau</span>
+  </div>
+</div>
 
-  <h2>Portfolio Project</h2>
-  <p class="portfolio-sub">
-    Beberapa hasil pekerjaan yang telah kami kerjakan.
-  </p>
+<!-- ===== PORTFOLIO ===== -->
+<section id="portfolio" class="portfolio-section fade">
+  <div class="section-label">— Portfolio</div>
+  <h2 class="section-title">Hasil Pekerjaan<br><span class="accent">Terbaik Kami</span></h2>
+  <p class="section-sub">Beberapa project nyata yang telah kami kerjakan untuk klien.</p>
 
-  <!-- FILTER MENU -->
   <div class="filter-buttons">
-    <button class="active" data-filter="all">All Projects</button>
-    <button data-filter="web">Website</button>
-    <button data-filter="android">Aplikasi Android</button>
-    <button data-filter="sketchup">Google SketchUp</button>
+    <button class="filter-btn active" data-filter="all">Semua</button>
+    <button class="filter-btn" data-filter="web">Website</button>
+    <button class="filter-btn" data-filter="android">Android</button>
+    <button class="filter-btn" data-filter="sketchup">SketchUp</button>
   </div>
 
-  <!-- GRID -->
-  <div class="portfolio-grid">
+  <div class="portfolio-grid" id="portfolioGrid">
 
     <!-- WEBSITE -->
-  <a href="https://web189.github.io/EsTeler-Abah/" target="_blank" class="portfolio-item web">
-  <iframe src="https://web189.github.io/EsTeler-Abah/" loading="lazy"></iframe>
-  <h3>Website Es Teler Abah</h3>
-</a>
+    <a href="https://web189.github.io/EsTeler-Abah/" target="_blank" class="portfolio-card web">
+      <div class="card-preview">
+        <iframe src="https://web189.github.io/EsTeler-Abah/" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+        <div class="card-overlay">
+          <span class="open-icon">↗</span>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-tag">Website</span>
+        <h3>Es Teler Abah</h3>
+      </div>
+    </a>
 
-   <a href="https://web189.github.io/Magic-Ink/" target="_blank" class="portfolio-item web">
-  <iframe src="https://web189.github.io/Magic-Ink/" loading="lazy"></iframe>
-  <h3>Website Magic Ink Tattoo</h3>
-</a>
+    <a href="https://web189.github.io/Magic-Ink/" target="_blank" class="portfolio-card web">
+      <div class="card-preview">
+        <iframe src="https://web189.github.io/Magic-Ink/" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+        <div class="card-overlay"><span class="open-icon">↗</span></div>
+      </div>
+      <div class="card-info">
+        <span class="card-tag">Website</span>
+        <h3>Magic Ink Tattoo</h3>
+      </div>
+    </a>
 
-  <a href="https://web189.github.io/Street-Food-FM/" target="_blank" class="portfolio-item web">
-  <iframe src="https://web189.github.io/Street-Food-FM/" loading="lazy"></iframe>
-  <h3>Website Street Food FM</h3>
-</a>
+    <a href="https://web189.github.io/Street-Food-FM/" target="_blank" class="portfolio-card web">
+      <div class="card-preview">
+        <iframe src="https://web189.github.io/Street-Food-FM/" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+        <div class="card-overlay"><span class="open-icon">↗</span></div>
+      </div>
+      <div class="card-info">
+        <span class="card-tag">Website</span>
+        <h3>Street Food FM</h3>
+      </div>
+    </a>
 
- <a href="https://web189.github.io/happy-wedding/" target="_blank" class="portfolio-item web">
-  <iframe src="https://web189.github.io/happy-wedding/" loading="lazy"></iframe>
-  <h3>Website Happy Wedding</h3>
-</a>
+    <a href="https://web189.github.io/happy-wedding/" target="_blank" class="portfolio-card web">
+      <div class="card-preview">
+        <iframe src="https://web189.github.io/happy-wedding/" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+        <div class="card-overlay"><span class="open-icon">↗</span></div>
+      </div>
+      <div class="card-info">
+        <span class="card-tag">Website</span>
+        <h3>Happy Wedding</h3>
+      </div>
+    </a>
 
-    <!-- ANDROID VIDEO -->
-  <div class="portfolio-item android video-vertical">
-  <iframe 
-    src="https://www.youtube.com/embed/zOYAZK2-6Eg"
-    allowfullscreen>
-  </iframe><h3>App DMS</h3>
-</div>
+    <!-- ANDROID -->
+    <div class="portfolio-card android video-card">
+      <div class="card-preview video-preview">
+        <iframe src="https://www.youtube.com/embed/zOYAZK2-6Eg" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="card-info">
+        <span class="card-tag android-tag">Android</span>
+        <h3>App DMS</h3>
+      </div>
+    </div>
 
-     <div class="portfolio-item android video-vertical">
-  <iframe 
-    src="https://www.youtube.com/embed/j1pTuWOuVaI?si=dHB6p_3vl1QIYQw6"
-    allowfullscreen>
-  </iframe><h3>App UMKM ESteler</h3>
-</div>
+    <div class="portfolio-card android video-card">
+      <div class="card-preview video-preview">
+        <iframe src="https://www.youtube.com/embed/j1pTuWOuVaI?si=dHB6p_3vl1QIYQw6" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="card-info">
+        <span class="card-tag android-tag">Android</span>
+        <h3>App UMKM EsTeler</h3>
+      </div>
+    </div>
 
-	  <div class="portfolio-item android video-vertical">
-  <iframe 
-    src="https://www.youtube.com/embed/fkrOpdnxXzg?si=EOG2lHf6rngwI6sU"
-    allowfullscreen>
-  </iframe><h3>App ABC mobile</h3>
-</div>
-
-	  
+    <div class="portfolio-card android video-card">
+      <div class="card-preview video-preview">
+        <iframe src="https://www.youtube.com/embed/fkrOpdnxXzg?si=EOG2lHf6rngwI6sU" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="card-info">
+        <span class="card-tag android-tag">Android</span>
+        <h3>App ABC Mobile</h3>
+      </div>
+    </div>
 
     <!-- SKETCHUP -->
-    <div class="portfolio-item sketchup">
-      <img src="img/hasil10.jpg" alt="">
-      <h3>Kantin Depo Parung</h3>
+    <div class="portfolio-card sketchup" data-img="img/hasil10.jpg">
+      <div class="card-preview img-preview">
+        <img src="img/hasil10.jpg" alt="Kantin Depo Parung" loading="lazy" onerror="this.src='https://placehold.co/400x240/1e293b/64748b?text=SketchUp'">
+        <div class="card-overlay"><span class="open-icon">🔍</span></div>
+      </div>
+      <div class="card-info">
+        <span class="card-tag sketchup-tag">SketchUp</span>
+        <h3>Kantin Depo Parung</h3>
+      </div>
     </div>
 
-    <div class="portfolio-item sketchup">
-      <img src="img/hasil11.jpg" alt="">
-      <h3>Pt Lokon Prima</h3>
+    <div class="portfolio-card sketchup" data-img="img/hasil11.jpg">
+      <div class="card-preview img-preview">
+        <img src="img/hasil11.jpg" alt="Pt Lokon Prima" loading="lazy" onerror="this.src='https://placehold.co/400x240/1e293b/64748b?text=SketchUp'">
+        <div class="card-overlay"><span class="open-icon">🔍</span></div>
+      </div>
+      <div class="card-info">
+        <span class="card-tag sketchup-tag">SketchUp</span>
+        <h3>Pt Lokon Prima</h3>
+      </div>
     </div>
-    
-    <div class="portfolio-item sketchup">
-      <img src="img/hasil4.jpg" alt="">
-      <h3>Workshop Pt JMTM</h3>
+
+    <div class="portfolio-card sketchup" data-img="img/hasil4.jpg">
+      <div class="card-preview img-preview">
+        <img src="img/hasil4.jpg" alt="Workshop Pt JMTM" loading="lazy" onerror="this.src='https://placehold.co/400x240/1e293b/64748b?text=SketchUp'">
+        <div class="card-overlay"><span class="open-icon">🔍</span></div>
+      </div>
+      <div class="card-info">
+        <span class="card-tag sketchup-tag">SketchUp</span>
+        <h3>Workshop Pt JMTM</h3>
+      </div>
     </div>
-    
-     <div class="portfolio-item sketchup">
-      <img src="img/hasil3.jpg" alt="">
-      <h3>Tank Solar Pt JMTM</h3>
+
+    <div class="portfolio-card sketchup" data-img="img/hasil3.jpg">
+      <div class="card-preview img-preview">
+        <img src="img/hasil3.jpg" alt="Tank Solar Pt JMTM" loading="lazy" onerror="this.src='https://placehold.co/400x240/1e293b/64748b?text=SketchUp'">
+        <div class="card-overlay"><span class="open-icon">🔍</span></div>
+      </div>
+      <div class="card-info">
+        <span class="card-tag sketchup-tag">SketchUp</span>
+        <h3>Tank Solar Pt JMTM</h3>
+      </div>
     </div>
 
   </div>
 </section>
 
-<section id="jasa" class="services">
-  <h2>Layanan & Harga</h2>
-  <p class="services-sub">
-    Harga ramah UMKM & di bawah pasaran ✨  
-    <br><strong>Transparan, Fleksibel, & Disesuaikan Dengan Kebutuhan Anda.</strong>
-  </p>
+<!-- ===== LAYANAN & HARGA ===== -->
+<section id="jasa" class="services-section fade">
+  <div class="section-label">— Layanan</div>
+  <h2 class="section-title">Harga Transparan<br><span class="accent">Kualitas Terjamin</span></h2>
+  <p class="section-sub">Harga ramah UMKM • Fleksibel • Disesuaikan kebutuhan Anda</p>
+
+  <!-- SLOT TIMER -->
+  <div class="slot-alert">
+    <span class="slot-fire">🔥</span>
+    <span>Slot bulan ini hampir penuh! Sisa <strong id="slotCount">3</strong> slot tersedia</span>
+    <span class="slot-fire">🔥</span>
+  </div>
 
   <div class="pricing-grid">
 
-    <!-- DESAIN RUMAH -->
     <div class="pricing-card">
-      <div class="badge">🔥 Best Value</div>
-      <h3>🏠 Desain Rumah</h3>
-      <p class="price">Mulai dari <strong>Rp 400.000</strong></p>
-      <ul>
-        <li>✔ 2x Revisi Gratis</li>
-        <li>✔ File JPG, PNG & Video Preview</li>
-        <li>✔ Konsultasi Konsep Gratis</li>
-        <li>⚠ Harga menyesuaikan luas & detail desain</li>
+      <div class="badge">Best Value</div>
+      <div class="pricing-icon">🏠</div>
+      <h3>Desain Rumah</h3>
+      <div class="price-tag">
+        <span class="price-from">mulai dari</span>
+        <strong class="price-num">Rp 400.000</strong>
+      </div>
+      <ul class="pricing-features">
+        <li><i class="fa fa-check"></i> 2x Revisi Gratis</li>
+        <li><i class="fa fa-check"></i> File JPG, PNG & Video Preview</li>
+        <li><i class="fa fa-check"></i> Konsultasi Konsep Gratis</li>
+        <li class="note"><i class="fa fa-info-circle"></i> Harga menyesuaikan luas & detail desain</li>
       </ul>
       <a href="#kontak" class="btn-price">Ambil Slot Sekarang</a>
     </div>
 
-    <!-- WEBSITE -->
-    <div class="pricing-card highlight">
-      <div class="badge promo">⭐ Paling Diminati</div>
-      <h3>🌐 Website Profesional</h3>
-      <p class="price">Mulai dari <strong>Rp 200.000</strong></p>
-      <ul>
-        <li>✔ 1x Revisi Gratis</li>
-        <li>✔ Desain Modern & Responsive</li>
-        <li>✔ Gratis Konsultasi Struktur</li>
-        <li>⚠ Harga tergantung fitur & custom request</li>
-        <li>✖ Domain & Hosting terpisah</li>
+    <div class="pricing-card highlighted">
+      <div class="badge hot">⭐ Paling Diminati</div>
+      <div class="pricing-icon">🌐</div>
+      <h3>Website Profesional</h3>
+      <div class="price-tag">
+        <span class="price-from">mulai dari</span>
+        <strong class="price-num">Rp 200.000</strong>
+      </div>
+      <ul class="pricing-features">
+        <li><i class="fa fa-check"></i> 1x Revisi Gratis</li>
+        <li><i class="fa fa-check"></i> Desain Modern & Responsive</li>
+        <li><i class="fa fa-check"></i> Gratis Konsultasi Struktur</li>
+        <li class="note"><i class="fa fa-info-circle"></i> Harga tergantung fitur & custom</li>
+        <li class="cross"><i class="fa fa-times"></i> Domain & Hosting terpisah</li>
       </ul>
       <a href="#kontak" class="btn-price">Konsultasi Sekarang</a>
     </div>
 
-    <!-- APLIKASI ANDROID -->
     <div class="pricing-card">
-      <div class="badge">🚀 Premium</div>
-      <h3>📱 Aplikasi Android</h3>
-      <p class="price">Mulai dari <strong>Rp 700.000</strong></p>
-      <ul>
-        <li>✔ 2x Revisi Gratis</li>
-        <li>✔ UI Modern & User Friendly</li>
-        <li>✔ Konsultasi Konsep Aplikasi</li>
-        <li>⚠ Harga menyesuaikan fitur & sistem database</li>
-        <li>✖ Publish Play Store terpisah</li>
+      <div class="badge premium">🚀 Premium</div>
+      <div class="pricing-icon">📱</div>
+      <h3>Aplikasi Android</h3>
+      <div class="price-tag">
+        <span class="price-from">mulai dari</span>
+        <strong class="price-num">Rp 700.000</strong>
+      </div>
+      <ul class="pricing-features">
+        <li><i class="fa fa-check"></i> 2x Revisi Gratis</li>
+        <li><i class="fa fa-check"></i> UI Modern & User Friendly</li>
+        <li><i class="fa fa-check"></i> Konsultasi Konsep Aplikasi</li>
+        <li class="note"><i class="fa fa-info-circle"></i> Harga menyesuaikan fitur & database</li>
+        <li class="cross"><i class="fa fa-times"></i> Publish Play Store terpisah</li>
       </ul>
       <a href="#kontak" class="btn-price">Booking Sekarang</a>
     </div>
 
   </div>
 
-  <!-- Psikologi Marketing -->
   <div class="pricing-note">
-    <p>
-      ⏳ <strong>Limited Slot Setiap Bulan!</strong>  
-      Untuk menjaga kualitas pengerjaan, kami hanya menerima beberapa project dalam 1 bulan.
-      Amankan slot Anda sekarang sebelum penuh.
-    </p>
-
-    <p>
-      💡 <strong>Harga Dasar (Starting Price)</strong>  
-      Harga dapat menyesuaikan dengan tingkat kesulitan, jumlah fitur, kompleksitas desain, dan revisi tambahan.  
-      Semua biaya akan disepakati terlebih dahulu sebelum pengerjaan dimulai.
-    </p>
-
-    <p>
-      🎯 Kami fokus pada hasil berkualitas, komunikasi jelas, dan kepuasan klien.
-    </p>
+    <p>💡 <strong>Harga Dasar (Starting Price)</strong> — Harga dapat menyesuaikan dengan tingkat kesulitan, jumlah fitur, dan revisi tambahan. Semua biaya disepakati sebelum pengerjaan dimulai.</p>
+    <p>🎯 Kami fokus pada hasil berkualitas, komunikasi jelas, dan kepuasan klien.</p>
   </div>
 </section>
 
-
-<section class="why-us fade">
-  <h2>Kenapa Pilih Kami?</h2>
-
+<!-- ===== WHY US ===== -->
+<section class="why-section fade">
+  <div class="section-label">— Keunggulan</div>
+  <h2 class="section-title">Kenapa Pilih <span class="accent">Kami?</span></h2>
   <div class="why-grid">
-    <div class="card">⚡ Respon cepat via WhatsApp</div>
-    <div class="card">🎯 Fokus hasil & kepuasan klien</div>
-    <div class="card">🔄 Revisi fleksibel</div>
-    <div class="card">🤝 Konsultasi GRATIS sebelum deal</div>
+    <div class="why-card">
+      <div class="why-icon">⚡</div>
+      <h4>Respon Cepat</h4>
+      <p>Balas pesan WhatsApp dalam waktu kurang dari 5 menit selama jam kerja</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🎯</div>
+      <h4>Fokus Kualitas</h4>
+      <p>Setiap project dikerjakan dengan sepenuh hati untuk hasil yang memuaskan</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🔄</div>
+      <h4>Revisi Fleksibel</h4>
+      <p>Kami memastikan hasil akhir sesuai dengan visi dan kebutuhan Anda</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🤝</div>
+      <h4>Konsultasi GRATIS</h4>
+      <p>Diskusikan kebutuhan Anda tanpa biaya, tanpa komitmen apapun</p>
+    </div>
   </div>
 </section>
 
+<!-- ===== TESTIMONI ===== -->
+<section class="testi-section fade">
+  <div class="section-label">— Testimoni</div>
+  <h2 class="section-title">Bukti Nyata dari <span class="accent">Klien Kami</span></h2>
+  <p class="section-sub">Screenshot langsung dari percakapan WhatsApp klien</p>
 
-<section class="testimoni fade">
-  <h2>Bukti Chat Konsumen</h2>
-  <p class="testi-sub">
-    Screenshot langsung dari percakapan WhatsApp klien
-  </p>
+  <div class="testi-gallery" id="testiGallery">
+    <div class="testi-slide" id="testiSlide">
+      <img src="img/testi/chat1.jpg" alt="Testimoni 1" class="testi-img lightbox-trigger" onerror="this.parentElement.style.display='none'">
+      <img src="img/testi/chat2.jpg" alt="Testimoni 2" class="testi-img lightbox-trigger" onerror="this.parentElement.style.display='none'">
+      <img src="img/testi/chat3.jpg" alt="Testimoni 3" class="testi-img lightbox-trigger" onerror="this.parentElement.style.display='none'">
+      <img src="img/testi/chat4.jpg" alt="Testimoni 4" class="testi-img lightbox-trigger" onerror="this.parentElement.style.display='none'">
+    </div>
+  </div>
 
-  <div class="testi-gallery">
-    <img src="img/testi/chat1.jpg" alt="Testimoni 1" class="testi-img">
-    <img src="img/testi/chat2.jpg" alt="Testimoni 2" class="testi-img">
-    <img src="img/testi/chat3.jpg" alt="Testimoni 3" class="testi-img">
-    <img src="img/testi/chat4.jpg" alt="Testimoni 4" class="testi-img">
+  <div class="testi-nav">
+    <button class="testi-btn" id="testiPrev">‹</button>
+    <div class="testi-dots" id="testiDots"></div>
+    <button class="testi-btn" id="testiNext">›</button>
   </div>
 </section>
 
-
-
-
-<section class="closing-cta fade">
+<!-- ===== CTA BANNER ===== -->
+<section class="cta-banner fade">
+  <div class="cta-glow"></div>
   <h2>Siap Mulai Proyek Anda?</h2>
   <p>Konsultasi gratis • Tanpa komitmen • Respon cepat</p>
-
-<a href="javascript:void(0)" id="openChat" class="wa-animated">
-  💬 <span id="ctaText">Mulai Chat Sekarang</span>
-</a>
-
+  <button id="openChat" class="btn-primary cta-pulse">
+    <span>💬</span> Mulai Chat Sekarang
+  </button>
 </section>
 
-
-<section id="kontak" class="contact fade">
-  <h2>Hubungi Kami Sekarang</h2>
-  <p class="contact-sub">
-    Konsultasi gratis • Respon cepat • Tanpa komitmen
-  </p>
+<!-- ===== KONTAK ===== -->
+<section id="kontak" class="contact-section fade">
+  <div class="section-label">— Kontak</div>
+  <h2 class="section-title">Hubungi <span class="accent">Kami</span></h2>
+  <p class="section-sub">Konsultasi gratis • Respon cepat • Tanpa komitmen</p>
 
   <div class="contact-card">
-    <div class="contact-info">
-      <p><strong>Sales Executive</strong></p>
-      <p>M DAUD S.M</p>
-      <p class="contact-wa">📱 0856-9732-1423</p>
-      <p class="contact-status">
-        <span class="dot"></span> Online setiap hari (08.00 – 18.00)
-      </p>
+    <div class="contact-avatar">
+      <img src="img/cs-avatar.png" alt="M Daud" onerror="this.src='https://ui-avatars.com/api/?name=M+Daud&background=0ea5e9&color=fff&size=120'">
+      <div class="contact-status-ring"></div>
     </div>
-	
+    <div class="contact-details">
+      <p class="contact-role">Sales Executive Marketing</p>
+      <h3 class="contact-name">M DAUD S.M</h3>
+      <p class="contact-wa">📱 0856-9732-1423</p>
+      <div class="contact-online">
+        <span class="online-dot"></span>
+        <span>Online setiap hari (08.00 – 18.00)</span>
+      </div>
+    </div>
+    <a href="https://wa.me/6285697321423?text=Halo+Daud%2C+saya+tertarik+ingin+bertanya" 
+       target="_blank" class="contact-wa-btn">
+      <i class="fab fa-whatsapp"></i> Chat via WhatsApp
+    </a>
+  </div>
 </section>
 
+<!-- ===== SOCIAL / SPONSOR ===== -->
+<section class="social-section fade">
+  <p class="social-label">Supported by Tim IT</p>
+  <div class="social-icons">
+    <a href="https://www.instagram.com/benyoriki?igsh=cGZkOXpuN2JyYjAy" target="_blank" class="social-icon ig" aria-label="Instagram">
+      <img src="img/ig.png" alt="Instagram" onerror="this.parentElement.innerHTML='<i class=\'fab fa-instagram\'></i>'">
+    </a>
+    <a href="https://m.youtube.com/channel/UCc5tgrRwlCiE_VDRN5Qnjcw" target="_blank" class="social-icon yt" aria-label="YouTube">
+      <img src="img/yt.png" alt="YouTube" onerror="this.parentElement.innerHTML='<i class=\'fab fa-youtube\'></i>'">
+    </a>
+    <a href="https://www.tiktok.com/@benyoriki" target="_blank" class="social-icon tt" aria-label="TikTok">
+      <img src="img/tiktok.png" alt="TikTok" onerror="this.parentElement.innerHTML='<i class=\'fab fa-tiktok\'></i>'">
+    </a>
+    <a href="https://www.facebook.com/benyo.hermawan" target="_blank" class="social-icon fb" aria-label="Facebook">
+      <img src="img/fb.png" alt="Facebook" onerror="this.parentElement.innerHTML='<i class=\'fab fa-facebook\'></i>'">
+    </a>
+  </div>
+</section>
 
-
-
-
-<!-- CHAT BOX -->
-<div class="chat-box" id="chatBox">
-  <div class="chat-header">
-  <div class="cs-info">
-    <img src="img/cs-avatar.png" alt="CS" class="cs-avatar">
-    <div>
-      <strong>Sales Executive</strong>
-      <span class="cs-status">● Online</span>
+<!-- ===== STATS DASHBOARD ===== -->
+<section class="stats-section fade">
+  <h3>📊 Statistik Interaksi</h3>
+  <div class="stats-grid">
+    <div class="stats-card">
+      <span class="stats-num" id="visitorCount">1.247</span>
+      <span class="stats-label">Total Pengunjung</span>
+    </div>
+    <div class="stats-card">
+      <span class="stats-num" id="chatCount">89</span>
+      <span class="stats-label">Chat Hari Ini</span>
+    </div>
+    <div class="stats-card">
+      <span class="stats-num">4.9⭐</span>
+      <span class="stats-label">Rating Klien</span>
     </div>
   </div>
-  <button id="closeChat">✕</button>
-</div>
+</section>
 
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <p class="footer-logo">M DAUD S.M</p>
+    <p class="footer-copy">© 2026 Sales Executive Marketing — Semua hak dilindungi</p>
+  </div>
+</footer>
 
-  <div class="chat-body" id="chatMessages"></div>
+<!-- ===== FLOATING WA BUTTON ===== -->
+<a href="https://wa.me/6285697321423" target="_blank" class="wa-float" id="waFloat" aria-label="WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+  <span class="wa-float-text">Chat Sekarang</span>
+</a>
 
-  <div class="chat-input">
-    <input
-      type="text"
-      id="userName"
-      placeholder="Masukkan nama Anda..."
-    />
-    <button id="sendName">Kirim</button>
+<!-- ===== CHAT BOX ===== -->
+<div class="chat-box" id="chatBox" role="dialog" aria-label="Chat Konsultasi">
+  <div class="chat-header">
+    <div class="cs-info">
+      <div class="cs-avatar-wrap">
+        <img src="img/cs-avatar.png" alt="CS Avatar" class="cs-avatar" onerror="this.src='https://ui-avatars.com/api/?name=MD&background=0ea5e9&color=fff&size=80'">
+        <span class="cs-online-dot"></span>
+      </div>
+      <div>
+        <strong>Sales Executive</strong>
+        <span class="cs-status">● Online</span>
+      </div>
+    </div>
+    <button id="closeChat" class="chat-close" aria-label="Tutup chat">✕</button>
+  </div>
+
+  <div class="chat-body" id="chatMessages" aria-live="polite"></div>
+
+  <div class="chat-input-wrap" id="nameInputWrap">
+    <input type="text" id="userName" placeholder="Masukkan nama Anda..." maxlength="50" autocomplete="off" aria-label="Nama Anda">
+    <button id="sendName" aria-label="Kirim nama">
+      <i class="fa fa-paper-plane"></i>
+    </button>
   </div>
 
   <div class="chat-footer">
-    <a
-      id="waLink"
-      target="_blank"
-      class="chat-wa"
-    >
-      Lanjut ke WhatsApp
+    <a id="waLink" href="#" target="_blank" class="chat-wa-btn" style="display:none;">
+      <i class="fab fa-whatsapp"></i> Lanjut ke WhatsApp
     </a>
   </div>
 </div>
 
-
-
-<section class="sponsor fade">
-  <p class="sponsor-title">Supported by Tim IT</p>
-
-  <div class="sponsor-icons">
-  <a href="https://www.instagram.com/benyoriki?igsh=cGZkOXpuN2JyYjAy"
-     target="_blank"
-     class="icon ig"
-     aria-label="Instagram">
-    <img src="img/ig.png" alt="Instagram">
-  </a>
-
-  <a href="https://m.youtube.com/channel/UCc5tgrRwlCiE_VDRN5Qnjcw"
-     target="_blank"
-     class="icon yt"
-     aria-label="YouTube">
-    <img src="img/yt.png" alt="YouTube">
-  </a>
-
-  <a href="https://www.tiktok.com/@benyoriki"
-     target="_blank"
-     class="icon tt"
-     aria-label="TikTok">
-    <img src="img/tiktok.png" alt="TikTok">
-  </a>
-
-  <a href="https://www.facebook.com/benyo.hermawan?_rdc=1&_rdr#"
-     target="_blank"
-     class="icon fb"
-     aria-label="Facebook">
-    <img src="img/fb.png" alt="Facebook">
-  </a>
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Lightbox" style="display:none">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Tutup">✕</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="Preview">
 </div>
 
-</section>
-
-<section class="mini-dashboard fade">
-  <h3>📊 Statistik Interaksi</h3>
-  
-</section>
-
-
-
-<footer>
-    <p>© 2026 M DAUD S.M | Sales Executive Marketing</p>
-</footer>
+<!-- ===== BACK TO TOP ===== -->
+<button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
 
 <script src="script.js"></script>
-<div id="lightbox" class="lightbox">
-  <span class="lightbox-close">✕</span>
-  <img class="lightbox-img" src="">
-</div>
-
 </body>
 </html>
-
-
-
