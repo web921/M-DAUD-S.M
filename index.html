@@ -110,6 +110,12 @@
       Desain Rumah • Website • Aplikasi Android
       <br>Solusi digital lengkap, respon cepat & konsultasi gratis
     </p>
+	
+	<p class="hero-credit">
+  <a href="https://www.instagram.com/benyoriki?igsh=cGZkOXpuN2JyYjAy" target="_blank">
+    Website Developer by Riki Hermawan S.Kom
+  </a>
+</p>
 
     <div class="hero-stats">
       <div class="stat-item">
@@ -557,6 +563,30 @@
 
 <!-- ===== BACK TO TOP ===== -->
 <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
+
+
+<!-- FIREBASE (compat SDK - wajib pakai versi compat agar firebase.database() tersedia) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+try {
+  const firebaseConfig = {
+    apiKey: "AIzaSyC4rhA-Kp9Cctb3bAoSfkYPSJxDXYCJcr8",
+    authDomain: "jasadaud.firebaseapp.com",
+    databaseURL: "https://jasadaud-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "jasadaud",
+    storageBucket: "jasadaud.firebasestorage.app",
+    messagingSenderId: "260613263154",
+    appId: "1:260613263154:web:76cdacc4fd55d32ad0d12b"
+  };
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+} catch(e) {
+  console.warn("Firebase init error:", e);
+}
+</script>
+
 
 <script src="script.js"></script>
 </body>
