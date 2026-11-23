@@ -122,10 +122,6 @@ function init() {
     (function f(t) { const k = Math.min(1, (t - t0) / 1200); b.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))) + m[2]; if (k < 1) requestAnimationFrame(f); })(t0);
   }), 500);
 
-  /* ---------- MARQUEE ---------- */
-  const items = [...CONFIG.skills, ...cats];
-  $("#track").innerHTML = [0, 1].map(() => `<span>${items.map(esc).join("</span><span>")}</span>`).join("");
-
   /* ---------- KEUNGGULAN ---------- */
   $("#why").innerHTML = CONFIG.why.map((w, i) => `<li class="gc spot rv" style="--d:${i * .06}s"><span class="ic">${ico(w[0])}</span><h3>${esc(w[1])}</h3><p>${esc(w[2])}</p></li>`).join("");
 
@@ -263,12 +259,16 @@ function init() {
   const bgm = $("#bgm"), mus = $("#mus");
   if (bgm && mus) {
     bgm.volume = .6;
+    /* Playlist: selalu mulai dari lagu_01 saat halaman dimuat; lagu_01 -> lagu_02 otomatis, lalu kembali ke lagu_01 */
+    const LIST = ["audio/lagu_01.mp3", "audio/lagu_02.mp3"]; let ti = 0;
+    const load = i => { ti = i; bgm.src = LIST[ti]; };
+    load(0);
+    bgm.addEventListener("ended", () => { load((ti + 1) % LIST.length); bgm.play().catch(() => {}); });
     const setOn = on => { mus.classList.toggle("on", on); mus.setAttribute("aria-pressed", on); const t = on ? "Hentikan musik" : "Putar musik"; mus.setAttribute("aria-label", t); mus.title = t; };
     mus.addEventListener("click", () => {
       if (bgm.paused) { bgm.play().then(() => setOn(true)).catch(() => setOn(false)); }
-      else { bgm.pause(); bgm.currentTime = 0; setOn(false); }
+      else { bgm.pause(); setOn(false); load(0); }
     });
-    bgm.addEventListener("pause", () => { if (bgm.currentTime === 0 || bgm.ended) setOn(false); });
   }
   syncInstall(); if (isIOS) setTimeout(maybeBanner, 9000); else if (deferredInstall) setTimeout(maybeBanner, 6000);
 }

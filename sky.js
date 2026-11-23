@@ -104,7 +104,8 @@
   }
 
   /* ---------- elemen ---------- */
-  var scene = $('scene'), sunEl = $('sun'), moonEl = $('moon'), cloudsEl = $('clouds'), wavesEl = $('waves');
+  var ST = window.DeepState = window.DeepState || {};
+  var abyssEl = $('abyss'), seabedEl = $('seabed'), gaugeM = $('gm'), gaugeD = $('gd'), scene = $('scene'), sunEl = $('sun'), moonEl = $('moon'), cloudsEl = $('clouds'), wavesEl = $('waves');
   var gSun = $('glintSun'), gMoon = $('glintMoon'), shade = $('shade'), shoot = $('shoot'), cvs = $('stars');
   var metaTheme = document.querySelector('meta[name=theme-color]');
   if (!scene || !sunEl) return;
@@ -122,7 +123,7 @@
     seaH = Math.round(H * 2.4);
     apexY = Math.max(98, hz * 0.27);
     RS.setProperty('--hz', hz + 'px'); RS.setProperty('--sea-h', seaH + 'px'); RS.setProperty('--vh', H + 'px');
-    buildStars(); buildGlints();
+    buildStars(); buildGlints(); measure();
   }
 
   function buildStars() {
@@ -244,6 +245,21 @@
     gMoon.style.transform = 'translate3d(' + mx.toFixed(1) + 'px,0,0)';
     gMoon.style.opacity = (0.8 * moonOp).toFixed(3);
 
+    var nk = nightK; RS.setProperty('--deep-op', (0.16 + 0.12 * clamp(alt, 0, 1) + 0.72 * nk).toFixed(3));
+    /* siluet Titanic & monster: warna/cahaya mengikuti jam */
+    RS.setProperty('--sil', rgb(mix([8, 40, 88], [12, 32, 76], nk)));
+    RS.setProperty('--sil-h', rgb(mix(mix([52, 80, 124], [30, 40, 78], warm), [3, 9, 26], nk)));
+    RS.setProperty('--rim', 'rgba(150,228,255,' + (0.26 + 0.44 * nk).toFixed(2) + ')');
+    RS.setProperty('--lit-op', (0.95 * nk).toFixed(2));
+    RS.setProperty('--eye-op', (0.4 + 0.6 * nk).toFixed(2));
+    RS.setProperty('--abyss-op', (0.66 + 0.26 * nk).toFixed(2));
+    RS.setProperty('--bird-op', (0.9 * smooth(0.12, 0.4, alt) * (1 - nk)).toFixed(2));
+    var dayK = clamp(alt, 0, 1);
+    RS.setProperty('--ray', (0.14 + 0.5 * dayK * (1 - nk) + 0.1 * nk).toFixed(2));
+    RS.setProperty('--bio', (0.35 + 0.65 * nk).toFixed(2));
+    ST.nk = nk; ST.day = dayK;
+    RS.setProperty('--mist-op', (0.14 + 0.2 * Math.max(nk, warm * smooth(-0.1, 0.1, alt) * 0.7)).toFixed(2));
+
     /* bintang */
     starA = smooth(-0.02, -0.22, alt);
     RS.setProperty('--star-op', starA.toFixed(3));
@@ -260,13 +276,33 @@
   }
 
   /* ---------- scroll: laut makin dalam, langit naik pelan (parallax) ---------- */
+  /* tinggi dokumen di-cache (untuk menghitung kedalaman selam 0..1) */
+  var docH = 0, lastDepth = -1, lastDv = -1;
+  function measure() { docH = Math.max(1, document.documentElement.scrollHeight - H); }
+  if (window.ResizeObserver) { try { new ResizeObserver(measure).observe(document.body); } catch (e) {} }
+  addEventListener('load', measure);
+  var fmt = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
   var ticking = false, K_PAR = 0.7;
   function apply() {
     ticking = false;
     var y = window.pageYOffset || 0, maxTr = Math.max(0, hz + seaH - H);
     tr = Math.min(y * K_PAR, maxTr);
     scene.style.transform = 'translate3d(0,' + (-tr).toFixed(1) + 'px,0)';
-    shade.style.opacity = Math.min(0.66, (y / (H * 1.15)) * 0.7).toFixed(3);
+    if (abyssEl) abyssEl.style.transform = 'translate3d(0,' + Math.max(0, tr - hz).toFixed(1) + 'px,0)';
+    /* kedalaman selam: 0 (permukaan) .. 1 (dasar laut, bangkai Titanic) */
+    if (!docH) measure();
+    var p = clamp(y / docH, 0, 1), sb = smooth(0.16, 0.97, p);
+    ST.p = p; ST.sb = sb;
+    if (seabedEl) seabedEl.style.transform = 'translate3d(0,' + ((1 - sb) * 104).toFixed(1) + '%,0)';
+    if (abyssEl && Math.abs(p - lastDv) > 0.01) { lastDv = p; abyssEl.style.setProperty('--dv', p.toFixed(3)); }
+    if (gaugeM) {
+      var d = Math.round(p * 380) * 10;
+      if (d !== lastDepth) {
+        lastDepth = d; gaugeM.textContent = fmt(d) + ' m' + (p > 0.965 ? ' · Titanic' : '');
+        gaugeD.style.top = (p * 100).toFixed(1) + '%';
+      }
+    }
+    shade.style.opacity = (Math.min(0.66, (y / (H * 1.15)) * 0.7) * (1 - 0.72 * sb)).toFixed(3);
     syncLoop();
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(apply); } }
