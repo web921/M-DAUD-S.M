@@ -92,13 +92,14 @@
   }
 
   /* waktu: jam perangkat; ?jam=HH:MM hanya untuk pratinjau desain */
-  var FORCE = null;
+  var FORCE = null, SPEED = 0, T0 = Date.now();
   try {
-    var q = new URLSearchParams(location.search).get('jam');
+    var sp = new URLSearchParams(location.search), q = sp.get('jam');
     if (q) { var pm = q.replace(',', '.').split(':'); FORCE = pm.length > 1 ? (+pm[0] + (+pm[1]) / 60) : +pm[0]; if (isNaN(FORCE)) FORCE = null; }
+    if (FORCE !== null && +sp.get('speed') > 0) SPEED = +sp.get('speed');   // ?jam=17:00&speed=600 → 1 detik nyata = 10 menit
   } catch (e) {}
   function nowHours() {
-    if (FORCE !== null) return ((FORCE % 24) + 24) % 24;
+    if (FORCE !== null) return ((FORCE + SPEED * (Date.now() - T0) / 3600000 % 24 + 24) % 24);
     var d = new Date(); return d.getHours() + d.getMinutes() / 60 + d.getSeconds() / 3600;
   }
 
@@ -130,11 +131,11 @@
     cw = W; chh = hz;
     cvs.width = Math.round(cw * dpr); cvs.height = Math.round(chh * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var n = clamp(Math.round(cw * chh / (lite ? 14000 : 8200)), 55, lite ? 110 : 230), i, cols = ['255,255,255', '200,220,255', '255,236,205'];
+    var n = clamp(Math.round(cw * chh / (lite ? 17000 : 11500)), 45, lite ? 85 : 150), i, cols = ['255,255,255', '200,220,255', '255,236,205'];
     stars = [];
     for (i = 0; i < n; i++) {
-      var y = Math.pow(rnd(), 1.25) * chh, big = rnd() > 0.93;
-      stars.push({ x: rnd() * cw, y: y, r: big ? 1.2 + rnd() * .7 : .35 + rnd() * .75, b: .45 + rnd() * .55,
+      var y = Math.pow(rnd(), 1.3) * chh, big = rnd() > 0.965;
+      stars.push({ x: rnd() * cw, y: y, r: big ? 1.3 + rnd() * .8 : .3 + Math.pow(rnd(), 2) * .9, b: .25 + Math.pow(rnd(), 1.6) * .75,
         sp: .0008 + rnd() * .0026, ph: rnd() * 6.28, ext: 1 - 0.88 * Math.pow(y / chh, 2.4), c: cols[(rnd() * 3) | 0], big: big });
     }
     drawStars(0);
@@ -177,15 +178,19 @@
   }
 
   function buildWaves() {
-    var L = [ // top(vh), tinggi(vh), periode, amplitudo, detik, arah, opasitas
-      [.006, .05, 144, 3, 64, 'normal', .55], [.03, .06, 180, 4, 50, 'reverse', .6], [.07, .08, 240, 5, 42, 'normal', .65],
-      [.12, .10, 360, 7, 34, 'reverse', .7], [.19, .13, 360, 9, 27, 'normal', .75], [.28, .16, 720, 12, 22, 'reverse', .8], [.40, .20, 720, 15, 18, 'normal', .85]];
+    var L = [ // top(vh), tinggi(vh), harmonik [k1,k2,k3], amplitudo, detik drift, arah, opasitas, detik bob
+      [.006, .05, [12, 18, 30], 4, 70, 'normal', .55, 6.5], [.03, .06, [8, 15, 24], 5, 54, 'reverse', .6, 8.2], [.07, .08, [6, 11, 20], 6, 44, 'normal', .65, 7.1],
+      [.12, .10, [4, 9, 14], 8, 36, 'reverse', .7, 9.3], [.19, .13, [3, 7, 13], 10, 29, 'normal', .75, 8.6], [.28, .16, [2, 5, 9], 13, 24, 'reverse', .8, 10.4], [.40, .20, [2, 3, 7], 16, 19, 'normal', .85, 11.7]];
     if (lite || innerWidth < 700) L = innerWidth < 700 && !lite ? L.filter(function (_, i) { return i !== 1 && i !== 4; }) : [L[0], L[2], L[4], L[6]];
-    wavesEl.innerHTML = L.map(function (w) {
-      var P = w[2], A = w[3], d = 'M0 50', x;
-      for (x = 0; x < 1440; x += P) d += 'Q' + (x + P / 4) + ' ' + (50 - A * 2) + ' ' + (x + P / 2) + ' 50T' + (x + P) + ' 50';
+    wavesEl.innerHTML = L.map(function (w, n) {
+      var h = w[2], A = w[3], d = '', x, y, ph = [n * 1.7, n * 2.9 + 1, n * .7 + 2.2];
+      for (x = 0; x <= 1440; x += 10) {
+        // k = jumlah siklus per 720 unit → pola berulang mulus; tiga harmonik beramplitudo berbeda
+        y = 50 + A * (.55 * Math.sin(6.2832 * h[0] * x / 720 + ph[0]) + .3 * Math.sin(6.2832 * h[1] * x / 720 + ph[1]) + .15 * Math.sin(6.2832 * h[2] * x / 720 + ph[2]));
+        d += (x ? 'L' : 'M') + x + ' ' + y.toFixed(1);
+      }
       return '<svg class="wave" viewBox="0 0 1440 100" preserveAspectRatio="none" style="top:calc(var(--vh)*' + w[0] + ');height:calc(var(--vh)*' + w[1] +
-        ');--sp:' + w[4] + 's;--dir:' + w[5] + ';opacity:' + w[6] + '"><path class="f" d="' + d + 'V100H0Z"/><path class="l" d="' + d + '"/></svg>';
+        ');--sp:' + w[4] + 's;--dir:' + w[5] + ';--bb:' + w[7] + 's;opacity:' + w[6] + '"><path class="f" d="' + d + 'V100H0Z"/><path class="l" d="' + d + '"/></svg>';
     }).join('');
   }
 
@@ -292,7 +297,7 @@
     root.classList.add('notrans');
     layout(); buildWaves(); buildClouds(); update(); apply();
     requestAnimationFrame(function () { requestAnimationFrame(function () { root.classList.remove('notrans'); }); });
-    timer = setInterval(function () { if (!document.hidden) update(); }, 30000);
+    timer = setInterval(function () { if (!document.hidden) update(); }, SPEED ? 1000 : 30000);
     if (!reduce) scheduleShoot();
     addEventListener('scroll', onScroll, { passive: true });
     var rt = 0;
