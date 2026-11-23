@@ -37,3 +37,6 @@ Titanic: muncul di horizon (langit) dan sebagai bayangan di dasar laut (`.wreck`
 
 ## v12
 - Kartu foto "Tentang" diperbaiki: foto diolah ulang (halo putih di tepi rambut hilang, cahaya tepi lebih halus), lingkaran cahaya di belakang kepala, lantai cahaya, nama + status "Siap menerima project", statistik kaca, badge "19 proyek nyata" di tepi atas kartu.
+
+## v14
+- Loading screen dibuat jauh lebih halus: seluruh animasi hanya memakai transform/opacity (GPU), tanpa blur/blend berat; isi website disembunyikan selama loading agar tidak membebani HP; garis sambungan gelombang dihilangkan; teks kedalaman diperbarui hemat.

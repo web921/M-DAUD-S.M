@@ -39,56 +39,60 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
 <style id="ld-css">
 html.ld{overflow:hidden}
-#loader{position:fixed;inset:0;z-index:9999;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#010615;color:#fff;font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;opacity:1;visibility:visible;transition:opacity .5s ease,transform .5s ease,visibility 0s .5s}
-#loader.out{opacity:0;transform:scale(1.07);pointer-events:none;visibility:hidden}
+html.ld:not(.ldgo) main,html.ld:not(.ldgo) .nav,html.ld:not(.ldgo) .prog,html.ld:not(.ldgo) .gauge,html.ld:not(.ldgo) .mus,html.ld:not(.ldgo) .skip{visibility:hidden}
+#loader{position:fixed;inset:0;z-index:9999;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#031634;color:#fff;font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;opacity:1;contain:layout paint;transition:opacity .5s ease,visibility 0s .5s}
+#loader.out{opacity:0;pointer-events:none;visibility:hidden}
 #loader *{box-sizing:border-box}
-.ld-bg{position:absolute;left:0;right:0;top:0;height:320%;background:linear-gradient(180deg,#58c8f0 0%,#1d84d6 9%,#0d4a9a 20%,#082f6c 34%,#051d46 50%,#030f2a 70%,#010615 100%);animation:ldDive 3.9s cubic-bezier(.45,.05,.4,1) forwards;will-change:transform}
-@keyframes ldDive{to{transform:translateY(-68.75%)}}
-.ld-rays{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.9;animation:ldRays 3.9s ease-in forwards}
-.ld-rays i{position:absolute;top:-12%;width:18vmax;height:120%;background:linear-gradient(180deg,rgba(190,240,255,.34),rgba(120,210,255,.08) 55%,transparent 85%);filter:blur(12px);transform-origin:top center;mix-blend-mode:screen;animation:ldSway 5s ease-in-out infinite}
-.ld-rays i:nth-child(1){left:2%;transform:rotate(16deg)}.ld-rays i:nth-child(2){left:30%;width:12vmax;transform:rotate(5deg);animation-delay:-1.5s}.ld-rays i:nth-child(3){left:56%;transform:rotate(-8deg);animation-delay:-3s}.ld-rays i:nth-child(4){left:78%;width:14vmax;transform:rotate(-18deg);animation-delay:-2s}
-@keyframes ldSway{50%{opacity:.5;translate:16px 0}}
-@keyframes ldRays{to{opacity:.12}}
-.ld-surface{position:absolute;left:0;right:0;top:15%;height:150px;pointer-events:none;animation:ldSurf 3.9s cubic-bezier(.5,0,.8,.6) forwards}
-@keyframes ldSurf{to{transform:translateY(-62vh)}}
-.ld-ship{position:absolute;left:50%;bottom:44px;width:min(78vw,330px);margin-left:calc(min(78vw,330px)/-2);animation:ldBob 2.6s ease-in-out infinite;--sil:#04122b;--rim:rgba(160,232,255,.7);--lit-op:1;filter:drop-shadow(0 0 16px rgba(255,200,120,.35))}
+#loader i,#loader div,#loader svg{backface-visibility:hidden}
+/* semua animasi hanya memakai transform & opacity (jalan di GPU, tidak patah walau halaman sedang memuat) */
+.ld-bg{position:absolute;left:0;right:0;top:0;height:300%;background:linear-gradient(180deg,#5ccbf2 0%,#1f86d8 8%,#0e4c9c 19%,#09326f 33%,#061f4a 50%,#031230 72%,#020a1e 100%);transform:translate3d(0,0,0);animation:ldDive 3.9s cubic-bezier(.45,.05,.4,1) forwards;will-change:transform}
+@keyframes ldDive{to{transform:translate3d(0,-66.6667%,0)}}
+.ld-rays{position:absolute;inset:0;pointer-events:none;overflow:hidden;animation:ldFade 3.9s ease-in forwards}
+@keyframes ldFade{to{opacity:.1}}
+.ld-rays i{position:absolute;top:-10%;width:26vmax;height:115%;margin-left:-13vmax;background:linear-gradient(180deg,rgba(190,240,255,.30),rgba(120,210,255,.07) 60%,transparent 90%);-webkit-mask-image:linear-gradient(90deg,transparent,#000 50%,transparent);mask-image:linear-gradient(90deg,transparent,#000 50%,transparent);transform-origin:50% 0;will-change:transform;animation:ldSway 5s ease-in-out infinite alternate}
+.ld-rays i:nth-child(1){left:12%;--r:14deg}.ld-rays i:nth-child(2){left:42%;--r:4deg;animation-delay:-1.6s}.ld-rays i:nth-child(3){left:68%;--r:-9deg;animation-delay:-3s}.ld-rays i:nth-child(4){left:92%;--r:-18deg;animation-delay:-2.2s}
+@keyframes ldSway{from{transform:rotate(calc(var(--r) - 3deg))}to{transform:rotate(calc(var(--r) + 3deg))}}
+.ld-surface{position:absolute;left:0;right:0;top:15%;height:150px;pointer-events:none;will-change:transform;animation:ldSurf 3.9s cubic-bezier(.5,0,.8,.6) forwards}
+@keyframes ldSurf{to{transform:translate3d(0,-62vh,0)}}
+.ld-ship{position:absolute;left:50%;bottom:44px;width:min(78vw,330px);margin-left:calc(min(78vw,330px)/-2);will-change:transform;animation:ldBob 2.8s ease-in-out infinite;--sil:#04122b;--rim:rgba(160,232,255,.7);--lit-op:1}
 .ld-ship-svg{width:100%;height:auto}
-@keyframes ldBob{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-5px) rotate(1.2deg)}}
-.ld-wave{position:absolute;left:0;bottom:0;width:200%;max-width:none;height:70px;animation:ldWave 5s linear infinite}
-.ld-wave.ld-w2{bottom:-14px;opacity:.75;animation-duration:7s;animation-direction:reverse}
-@keyframes ldWave{to{transform:translateX(-50%)}}
+@keyframes ldBob{0%,100%{transform:translate3d(0,0,0) rotate(-1.2deg)}50%{transform:translate3d(0,-5px,0) rotate(1.2deg)}}
+.ld-wave{position:absolute;left:0;bottom:-30px;width:200%;max-width:none;height:100px;will-change:transform;animation:ldWave 6s linear infinite}
+.ld-wave.ld-w2{bottom:-44px;opacity:.8;animation-duration:9s;animation-direction:reverse}
+@keyframes ldWave{to{transform:translate3d(-50%,0,0)}}
 .ld-bub{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.ld-bub i{position:absolute;bottom:-20px;border-radius:50%;border:1px solid rgba(200,245,255,.6);background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.55),rgba(255,255,255,.04) 62%);animation:ldUp linear infinite}
-@keyframes ldUp{0%{transform:translate(0,0);opacity:0}10%{opacity:.9}100%{transform:translate(var(--dx,12px),-112vh);opacity:0}}
+.ld-bub i{position:absolute;bottom:-20px;border-radius:50%;border:1px solid rgba(200,245,255,.55);background:rgba(190,240,255,.12);will-change:transform,opacity;animation:ldUp linear infinite}
+@keyframes ldUp{0%{transform:translate3d(0,0,0);opacity:0}10%{opacity:.85}100%{transform:translate3d(var(--dx,12px),-112vh,0);opacity:0}}
 .ld-main{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 24px;margin-top:6vh}
 .ld-logo{position:relative;width:118px;height:118px;display:grid;place-items:center;animation:ldPop .8s cubic-bezier(.2,.9,.25,1.2) both}
-@keyframes ldPop{from{opacity:0;transform:scale(.6) translateY(14px)}}
-.ld-logo img{position:relative;z-index:2;width:112px;height:112px;border-radius:28px;object-fit:cover;filter:drop-shadow(0 10px 30px rgba(34,211,238,.6))}
-.ld-logo::before,.ld-logo::after{content:"";position:absolute;inset:-6px;border-radius:36px;border:2px solid rgba(110,225,255,.6);animation:ldPing 2s ease-out infinite}
-.ld-logo::after{animation-delay:1s}
-@keyframes ldPing{from{transform:scale(.9);opacity:.9}to{transform:scale(1.6);opacity:0}}
-.ld-brand{margin-top:22px;font-size:clamp(1.7rem,7vw,2.4rem);font-weight:800;font-style:italic;letter-spacing:-.01em;line-height:1.1;text-shadow:0 4px 28px rgba(2,10,34,.7);animation:ldRise .8s .25s ease both}
+@keyframes ldPop{from{opacity:0;transform:scale(.7) translate3d(0,14px,0)}}
+.ld-logo::before{content:"";position:absolute;inset:-26px;border-radius:50%;background:radial-gradient(circle,rgba(70,210,255,.5),transparent 68%);animation:ldGlow 2.4s ease-in-out infinite alternate}
+@keyframes ldGlow{from{opacity:.45;transform:scale(.92)}to{opacity:1;transform:scale(1.08)}}
+.ld-logo img{position:relative;z-index:2;width:112px;height:112px;border-radius:28px;object-fit:cover;box-shadow:0 10px 34px rgba(34,211,238,.45)}
+.ld-logo::after{content:"";position:absolute;inset:-4px;border-radius:34px;border:2px solid rgba(110,225,255,.6);will-change:transform,opacity;animation:ldPing 2s ease-out infinite}
+@keyframes ldPing{from{transform:scale(.92);opacity:.9}to{transform:scale(1.55);opacity:0}}
+.ld-brand{margin-top:22px;font-size:clamp(1.7rem,7vw,2.4rem);font-weight:800;font-style:italic;letter-spacing:-.01em;line-height:1.1;text-shadow:0 4px 24px rgba(2,10,34,.7);animation:ldRise .8s .25s ease both}
 .ld-brand b{color:#7ae7ff;font-weight:800}
 .ld-tag{margin-top:10px;font-size:.7rem;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.78);animation:ldRise .8s .4s ease both}
-@keyframes ldRise{from{opacity:0;transform:translateY(12px)}}
+@keyframes ldRise{from{opacity:0;transform:translate3d(0,12px,0)}}
 .ld-depth{margin-top:34px;width:min(78vw,320px);animation:ldRise .8s .55s ease both}
 .ld-row{display:flex;justify-content:space-between;align-items:baseline;font-size:.78rem;color:rgba(255,255,255,.75);margin-bottom:9px}
-.ld-row b{font-size:1.15rem;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.ld-row b{display:inline-block;min-width:5.6ch;text-align:right;font-size:1.15rem;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:.02em}
 .ld-bar{height:6px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(160,230,255,.18)}
-.ld-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#22d3ee,#6aa8ff,#a78bfa);box-shadow:0 0 16px rgba(34,211,238,.8);animation:ldFill 3.5s cubic-bezier(.35,.1,.3,1) forwards}
-@keyframes ldFill{to{width:100%}}
-.ld-msg{margin-top:12px;min-height:1.2em;font-size:.82rem;color:rgba(200,240,255,.9);transition:opacity .25s}
-.ld-vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(1,5,18,.65))}
-@media(prefers-reduced-motion:reduce){.ld-bg,.ld-surface,.ld-rays,.ld-rays i,.ld-ship,.ld-wave,.ld-bub i,.ld-logo::before,.ld-logo::after{animation:none!important}.ld-bg{transform:translateY(-30%)}.ld-bub{display:none}}
+.ld-bar i{display:block;height:100%;width:100%;border-radius:inherit;background:linear-gradient(90deg,#22d3ee,#6aa8ff,#a78bfa);transform:scaleX(0);transform-origin:0 50%;will-change:transform;animation:ldFill 3.5s cubic-bezier(.35,.1,.3,1) forwards}
+@keyframes ldFill{to{transform:scaleX(1)}}
+.ld-msg{margin-top:12px;min-height:1.3em;font-size:.82rem;color:rgba(200,240,255,.9)}
+.ld-vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(1,5,18,.6))}
+@media(prefers-reduced-motion:reduce){.ld-bg,.ld-surface,.ld-rays,.ld-rays i,.ld-ship,.ld-wave,.ld-bub i,.ld-logo::before,.ld-logo::after{animation:none!important}.ld-bg{transform:translate3d(0,-30%,0)}.ld-bub{display:none}.ld-bar i{animation-duration:.01s}}
 </style>
 <noscript><style>#loader{display:none!important}html.ld{overflow:auto}</style></noscript>
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"JasaDaud.online","url":"https://jasadaud.online/","image":"https://jasadaud.online/img/preview-v3.jpg","telephone":"+6285697321423","description":"Jasa pembuatan website, sistem informasi, dashboard dan solusi digital untuk bisnis.","areaServed":"ID","sameAs":[]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Berapa biaya pembuatan website?", "acceptedAnswer": {"@type": "Answer", "text": "Setiap bisnis punya kebutuhan berbeda, jadi biaya disusun sesuai fitur, kompleksitas, dan jenis project Anda, bukan paket seragam yang membuat Anda membayar fitur yang tidak dipakai. Ceritakan ide Anda lewat WhatsApp dan Anda akan menerima penawaran yang jelas sebelum pengerjaan dimulai. Konsultasi awal 100% gratis."}}, {"@type": "Question", "name": "Berapa lama website selesai dikerjakan?", "acceptedAnswer": {"@type": "Answer", "text": "Tergantung ruang lingkupnya. Website profil atau katalog umumnya lebih cepat, sedangkan sistem dengan dashboard, booking, atau database memerlukan tahapan yang lebih panjang. Estimasi waktu disepakati sejak awal, dan Anda bisa memantau perkembangannya di setiap tahap."}}, {"@type": "Question", "name": "Apakah website nyaman dibuka di HP?", "acceptedAnswer": {"@type": "Answer", "text": "Sangat nyaman. Setiap website dirancang mobile-first: tampil rapi di HP, tablet, dan desktop, ringan saat dibuka, dan tombolnya mudah disentuh. Ini penting karena sebagian besar calon pelanggan kini mencari bisnis lewat HP."}}, {"@type": "Question", "name": "Bisakah website dipasang seperti aplikasi di HP?", "acceptedAnswer": {"@type": "Answer", "text": "Bisa. Dengan teknologi PWA, website dapat dipasang ke layar utama HP lengkap dengan ikon sendiri, terbuka layaknya aplikasi, dan tetap bisa diakses saat koneksi lemah. Website JasaDaud.online ini sendiri sudah mendukungnya: ketuk tombol Install untuk mencobanya."}}, {"@type": "Question", "name": "Jenis website apa saja yang bisa dibuat?", "acceptedAnswer": {"@type": "Answer", "text": "Website bisnis dan company profile, katalog produk, toko online, sistem booking dan antrean, sistem informasi, dashboard monitoring, hingga aplikasi web khusus. Lihat 19+ project nyata di bagian Portfolio, semuanya bisa dicoba langsung."}}, {"@type": "Question", "name": "Apakah bisa menambah fitur setelah website selesai?", "acceptedAnswer": {"@type": "Answer", "text": "Bisa. Tersedia layanan maintenance dan pengembangan untuk perbaikan, update konten, penambahan fitur, dan optimasi. Website Anda dibangun agar mudah berkembang mengikuti pertumbuhan bisnis."}}, {"@type": "Question", "name": "Bagaimana dengan domain dan hosting?", "acceptedAnswer": {"@type": "Answer", "text": "Website dipublikasikan hingga benar-benar siap digunakan. Opsi domain dan hosting dibahas bersama sesuai kebutuhan dan anggaran Anda, sehingga Anda tidak perlu bingung soal teknis."}}, {"@type": "Question", "name": "Bagaimana cara memulai?", "acceptedAnswer": {"@type": "Answer", "text": "Cukup tiga langkah: klik tombol WhatsApp, ceritakan kebutuhan dan target bisnis Anda, lalu kita susun rencana dan penawaran yang sesuai. Alur lengkapnya bisa dilihat di bagian Proses Kerja."}}]}</script>
 <script>document.documentElement.classList.add('js','ld');</script>
-<script src="sky.js?v=13" defer></script>
-<script src="deep.js?v=13" defer></script>
-<script src="script.js?v=13" defer></script>
+<script src="sky.js?v=14" defer></script>
+<script src="deep.js?v=14" defer></script>
+<script src="script.js?v=14" defer></script>
 </head>
 <body>
 
@@ -98,10 +102,10 @@ html.ld{overflow:hidden}
   <div class="ld-rays"><i></i><i></i><i></i><i></i></div>
   <div class="ld-surface" aria-hidden="true">
     <div class="ld-ship"><svg class="ld-ship-svg" viewBox="0 0 640 168"><use href="#titanic"/></svg></div>
-    <svg class="ld-wave" viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true"><path fill="rgba(8,60,120,.95)" d="M0 30C100 8 200 8 300 30S500 52 600 30S800 8 900 30S1100 52 1200 30V70H0Z"/></svg>
-    <svg class="ld-wave ld-w2" viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true"><path fill="rgba(3,28,70,.95)" d="M0 30C100 8 200 8 300 30S500 52 600 30S800 8 900 30S1100 52 1200 30V70H0Z"/></svg>
+    <svg class="ld-wave" viewBox="0 0 1200 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="ldg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#083c78" stop-opacity=".96"/><stop offset=".55" stop-color="#083c78" stop-opacity=".9"/><stop offset="1" stop-color="#083c78" stop-opacity="0"/></linearGradient></defs><path fill="url(#ldg1)" d="M0 30C100 8 200 8 300 30S500 52 600 30S800 8 900 30S1100 52 1200 30V100H0Z"/></svg>
+    <svg class="ld-wave ld-w2" viewBox="0 0 1200 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="ldg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#031c46" stop-opacity=".96"/><stop offset=".55" stop-color="#031c46" stop-opacity=".9"/><stop offset="1" stop-color="#031c46" stop-opacity="0"/></linearGradient></defs><path fill="url(#ldg2)" d="M0 30C100 8 200 8 300 30S500 52 600 30S800 8 900 30S1100 52 1200 30V100H0Z"/></svg>
   </div>
-  <div class="ld-bub" aria-hidden="true"><i style="left:43%;width:7px;height:7px;animation-duration:6.6s;animation-delay:-0.3s;--dx:10px"></i><i style="left:14%;width:9px;height:9px;animation-duration:7.3s;animation-delay:-5.5s;--dx:-11px"></i><i style="left:6%;width:5px;height:5px;animation-duration:6.7s;animation-delay:-0.4s;--dx:-19px"></i><i style="left:72%;width:12px;height:12px;animation-duration:5.2s;animation-delay:-3.4s;--dx:-10px"></i><i style="left:82%;width:16px;height:16px;animation-duration:8.8s;animation-delay:-3.5s;--dx:1px"></i><i style="left:8%;width:7px;height:7px;animation-duration:5.2s;animation-delay:-5.2s;--dx:-6px"></i><i style="left:55%;width:7px;height:7px;animation-duration:7.2s;animation-delay:-3.4s;--dx:11px"></i><i style="left:89%;width:7px;height:7px;animation-duration:5.4s;animation-delay:-3.4s;--dx:-12px"></i><i style="left:49%;width:5px;height:5px;animation-duration:7.2s;animation-delay:-0.4s;--dx:-21px"></i><i style="left:81%;width:7px;height:7px;animation-duration:7.0s;animation-delay:-3.2s;--dx:-4px"></i><i style="left:61%;width:16px;height:16px;animation-duration:8.7s;animation-delay:-2.2s;--dx:-9px"></i><i style="left:25%;width:7px;height:7px;animation-duration:5.3s;animation-delay:-1.8s;--dx:7px"></i><i style="left:45%;width:12px;height:12px;animation-duration:6.2s;animation-delay:-5.9s;--dx:-17px"></i><i style="left:67%;width:12px;height:12px;animation-duration:5.7s;animation-delay:-2.1s;--dx:7px"></i><i style="left:55%;width:5px;height:5px;animation-duration:8.8s;animation-delay:-0.5s;--dx:11px"></i><i style="left:75%;width:9px;height:9px;animation-duration:6.4s;animation-delay:-2.1s;--dx:7px"></i><i style="left:76%;width:12px;height:12px;animation-duration:5.3s;animation-delay:-0.6s;--dx:-7px"></i><i style="left:62%;width:5px;height:5px;animation-duration:5.2s;animation-delay:-4.2s;--dx:17px"></i></div>
+  <div class="ld-bub" aria-hidden="true"><i style="left:59%;width:16px;height:16px;animation-duration:8.4s;animation-delay:-4.7s;--dx:4px"></i><i style="left:67%;width:16px;height:16px;animation-duration:5.8s;animation-delay:-4.8s;--dx:6px"></i><i style="left:82%;width:16px;height:16px;animation-duration:8.2s;animation-delay:-0.6s;--dx:-5px"></i><i style="left:20%;width:5px;height:5px;animation-duration:7.2s;animation-delay:-5.3s;--dx:16px"></i><i style="left:7%;width:16px;height:16px;animation-duration:8.9s;animation-delay:-5.8s;--dx:17px"></i><i style="left:96%;width:16px;height:16px;animation-duration:7.6s;animation-delay:-3.7s;--dx:9px"></i><i style="left:10%;width:5px;height:5px;animation-duration:5.1s;animation-delay:-5.3s;--dx:14px"></i><i style="left:5%;width:12px;height:12px;animation-duration:6.3s;animation-delay:-3.5s;--dx:-12px"></i><i style="left:68%;width:7px;height:7px;animation-duration:7.6s;animation-delay:-3.0s;--dx:18px"></i><i style="left:12%;width:12px;height:12px;animation-duration:7.6s;animation-delay:-2.4s;--dx:11px"></i><i style="left:12%;width:9px;height:9px;animation-duration:6.3s;animation-delay:-1.4s;--dx:-6px"></i><i style="left:5%;width:5px;height:5px;animation-duration:7.3s;animation-delay:-0.6s;--dx:-18px"></i></div>
   <div class="ld-vig"></div>
   <div class="ld-main">
     <div class="ld-logo"><img src="img/logo-128.webp" alt="" width="112" height="112"></div>
@@ -116,23 +120,27 @@ html.ld{overflow:hidden}
 </div>
 <script>
 (function(){
-  var L=document.getElementById('loader'),m=document.getElementById('ldm'),t=document.getElementById('ldt'),D=4000,FADE=500,t0=Date.now(),done=false;
+  var L=document.getElementById('loader'),m=document.getElementById('ldm'),t=document.getElementById('ldt'),D=4000,FADE=500,t0=Date.now(),done=false,last=0;
   var msgs=['Menyiapkan solusi digital Anda…','Menjelajah lautan ide bisnis…','Menata website & sistem modern…','Hampir sampai di dasar samudra…'];
   function fmt(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' m'}
-  function tick(){
+  function tick(now){
     if(done)return;
-    var e=Date.now()-t0,k=Math.min(1,e/(D-FADE)),v=1-Math.pow(1-k,2.2);
-    if(m)m.textContent=fmt(Math.round(3800*v));
-    var i=Math.min(msgs.length-1,Math.floor(k*msgs.length));
-    if(t&&t.textContent!==msgs[i])t.textContent=msgs[i];
-    if(k<1)requestAnimationFrame(tick);
+    if(now-last>=90){
+      last=now;
+      var k=Math.min(1,(Date.now()-t0)/(D-FADE)),v=1-Math.pow(1-k,2.2);
+      if(m)m.textContent=fmt(Math.round(3800*v/10)*10);
+      var i=Math.min(msgs.length-1,Math.floor(k*msgs.length));
+      if(t&&t.textContent!==msgs[i])t.textContent=msgs[i];
+    }
+    requestAnimationFrame(tick);
   }
   function finish(){
     if(done)return;done=true;
     if(m)m.textContent=fmt(3800);
+    document.documentElement.classList.add('ldgo');
     L.classList.add('out');
     setTimeout(function(){
-      document.documentElement.classList.remove('ld');
+      document.documentElement.classList.remove('ld','ldgo');
       if(L.parentNode)L.parentNode.removeChild(L);
       var s=document.getElementById('ld-css');if(s&&s.parentNode)s.parentNode.removeChild(s);
     },FADE+60);
