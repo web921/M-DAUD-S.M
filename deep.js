@@ -17,7 +17,8 @@
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var coarse = matchMedia('(pointer: coarse)').matches;
   var cores = navigator.hardwareConcurrency || 8, mem = navigator.deviceMemory || 8;
-  var lite = (coarse && cores <= 4) || mem <= 2;
+  var sv = false; try { sv = !!(navigator.connection && navigator.connection.saveData) || sessionStorage.getItem('jd-lite') === '1'; } catch (e) {}
+  var lite = (coarse && cores <= 4) || mem <= 2 || sv;
   var ST = window.DeepState = window.DeepState || { nk: .8, day: 0, p: 0, vis: true };
   var TAU = Math.PI * 2, rnd = Math.random;
   var clamp = function (x, a, b) { return Math.min(b, Math.max(a, x)); };
@@ -31,22 +32,21 @@
   /* ---------- ukuran & isi ---------- */
   function size() {
     W = cv.clientWidth || innerWidth; H = cv.clientHeight || innerHeight; small = W < 700;
-    dpr = Math.min(window.devicePixelRatio || 1, lite ? 1 : 1.5);
+    dpr = Math.min(window.devicePixelRatio || 1, (lite || small) ? 1 : 1.25);
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     build();
   }
   function build() {
-    var i, nS = lite ? 22 : small ? 38 : 70, nP = lite ? 6 : small ? 12 : 22;
+    var i, nS = lite ? 12 : small ? 20 : 38, nP = lite ? 3 : small ? 5 : 9;
     snow = []; plank = []; fish = [];
     for (i = 0; i < nS; i++) {
       var z = rnd();                       // 0 = jauh, 1 = dekat
-      snow.push({ x: rnd() * W, y: rnd() * H, z: z, r: .5 + z * 1.7, vy: 3 + z * 9, ph: rnd() * TAU, a: .12 + z * .32 });
+      snow.push({ b: Math.min(3, (z * 4) | 0), x: rnd() * W, y: rnd() * H, z: z, r: .5 + z * 1.7, vy: 3 + z * 9, ph: rnd() * TAU, a: .12 + z * .32 });
     }
     for (i = 0; i < nP; i++) plank.push({ x: rnd() * W, y: rnd() * H, ph: rnd() * TAU, sp: .6 + rnd() * 1.4, r: .8 + rnd() * 1.2, vx: (rnd() - .5) * 5, vy: (rnd() - .5) * 3 });
     /* dua kawanan ikan: satu di lapisan atas, satu di tengah (arah berlawanan) */
-    school(lite ? 8 : small ? 12 : 20, .2, 1, 0);
-    if (!lite) school(small ? 9 : 14, .5, -1, .5);
+    school(lite ? 4 : small ? 6 : 10, .2, 1, 0);          /* hanya satu kawanan kecil: hewan laut tidak mendominasi tampilan */
     spawnMon(true);
   }
   function school(n, yy, dir, off) {
@@ -60,7 +60,7 @@
   function spawnMon(initial) {
     var base = small ? W * 1.15 : Math.min(W * .8, 1180);
     mon.sc = .88 + rnd() * .24; mon.L = base * mon.sc;
-    mon.dur = (small ? 78 : 100) + rnd() * 25;
+    mon.dur = (small ? 90 : 115) + rnd() * 25;
     mon.u = initial ? .34 : 0;
     mon.y0 = H * (.3 + rnd() * .3); mon.ya = H * (.025 + rnd() * .03); mon.yph = rnd() * TAU;
     mon.dir = initial ? 1 : (rnd() < .5 ? 1 : -1);
@@ -218,46 +218,52 @@
       if (sc.t > 1) { sc.t = 0; sc.y0 = H * (.12 + rnd() * .5); sc.dir = rnd() < .5 ? 1 : -1; }
       var cx = sc.dir > 0 ? -160 + sc.t * span : W + 160 - sc.t * span;
       var cy = sc.y0 + Math.sin(time * .35 + si) * sc.ya;
-      var depth = 1 - sm(0, 1, cy / H) * .5;
+      var depth = 1 - sm(0, 1, cy / H) * .5; ctx.fillStyle = 'rgb(130,185,235)';
       for (var i = 0; i < sc.n; i++) {
         var f = sc.f[i], x = cx + f.ox + Math.sin(time * .9 + f.ph) * 9, y = cy + f.oy + Math.cos(time * 1.15 + f.ph * 1.3) * 6;
         var vx = sc.dir * 26 + Math.cos(time * .9 + f.ph) * 9 * .9, vy = -Math.sin(time * 1.15 + f.ph * 1.3) * 6 * 1.15;
         var ang = Math.atan2(vy, vx), flash = .5 + .5 * Math.sin(time * .8 + f.ph * 2 + ang * 3);
         var a = k.fish * depth * (.35 + .65 * flash);
         if (a < .02) continue;
-        var s = f.s, tw = Math.sin(time * f.sp * 2 + f.ph) * .5;
-        ctx.save(); ctx.translate(x, y); ctx.rotate(ang);
-        ctx.fillStyle = 'rgba(130,185,235,' + a.toFixed(3) + ')';
+        var s = f.s, tw = Math.sin(time * f.sp * 2 + f.ph) * .5, ca = Math.cos(ang), sa = Math.sin(ang);
+        ctx.globalAlpha = a; ctx.setTransform(dpr * ca, dpr * sa, -dpr * sa, dpr * ca, dpr * x, dpr * y);
         ctx.beginPath(); ctx.moveTo(s, 0); ctx.quadraticCurveTo(s * .2, -s * .38, -s * .5, -s * .08 + tw);
         ctx.lineTo(-s * .95, -s * .34 + tw * 2); ctx.lineTo(-s * .85, tw); ctx.lineTo(-s * .95, s * .34 + tw * 2); ctx.lineTo(-s * .5, s * .08 + tw);
         ctx.quadraticCurveTo(s * .2, s * .38, s, 0); ctx.fill();
-        ctx.restore();
       }
     }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.globalAlpha = 1;
   }
 
   /* ---------- salju laut, plankton, gelembung ---------- */
   function drawSnow(time, dt, k) {
-    var i, p;
+    var i, p, b;
     for (i = 0; i < snow.length; i++) {
       p = snow[i]; p.y += p.vy * dt; p.x += Math.sin(time * .4 + p.ph) * (4 + p.z * 8) * dt;
       if (p.y > H + 4) { p.y = -4; p.x = rnd() * W; }
       if (p.x < -4) p.x = W + 4; else if (p.x > W + 4) p.x = -4;
-      ctx.fillStyle = 'rgba(190,225,255,' + (p.a * k.snow).toFixed(3) + ')';
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, TAU); ctx.fill();
     }
+    /* digambar per kelompok kedalaman (4 draw call, bukan satu per partikel) */
+    ctx.fillStyle = 'rgb(190,225,255)';
+    for (b = 0; b < 4; b++) {
+      ctx.globalAlpha = (.12 + (b + .5) / 4 * .32) * k.snow; ctx.beginPath();
+      for (i = 0; i < snow.length; i++) { p = snow[i]; if (p.b === b) { ctx.moveTo(p.x + p.r, p.y); ctx.arc(p.x, p.y, p.r, 0, TAU); } }
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
     for (i = 0; i < plank.length; i++) {
       p = plank[i]; p.x += p.vx * dt; p.y += p.vy * dt;
       if (p.x < -6) p.x = W + 6; else if (p.x > W + 6) p.x = -6; if (p.y < -6) p.y = H + 6; else if (p.y > H + 6) p.y = -6;
       var tw = Math.max(0, Math.sin(time * p.sp + p.ph)); tw *= tw; var a = tw * k.bio;
       if (a < .03) continue;
-      ctx.fillStyle = 'rgba(70,235,255,' + (a * .12).toFixed(3) + ')'; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 5, 0, TAU); ctx.fill();
-      ctx.fillStyle = 'rgba(170,255,255,' + Math.min(1, a).toFixed(3) + ')'; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, TAU); ctx.fill();
+      ctx.globalAlpha = a * .12; ctx.fillStyle = 'rgb(70,235,255)'; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 5, 0, TAU); ctx.fill();
+      ctx.globalAlpha = Math.min(1, a); ctx.fillStyle = 'rgb(170,255,255)'; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, TAU); ctx.fill();
     }
+    ctx.globalAlpha = 1;
   }
   function drawBubbles(time, dt, k) {
     var sb = ST.sb || 0;
-    if (sb > .35 && bubbles.length < (lite ? 6 : 12) && rnd() < dt * 2.2) {
+    if (sb > .35 && bubbles.length < (lite ? 3 : 6) && rnd() < dt * 2.2) {
       var vx = W * (small ? .22 : .3) + (rnd() - .5) * 40;
       bubbles.push({ x: vx, y: H - H * (small ? .2 : .26) * sb, r: 1.5 + rnd() * 3, ph: rnd() * TAU, v: 22 + rnd() * 22 });
     }
@@ -271,12 +277,14 @@
   }
 
   /* ---------- loop ---------- */
-  var raf = 0, last = 0, T = 0, FRAME = lite ? 50 : 33;
+  var raf = 0, last = 0, T = 0, FRAME = lite ? 50 : 40, cost = 0, nC = 0;
   function frame(ts) {
     raf = requestAnimationFrame(frame);
     if (ts - last < FRAME) return;
     var dt = Math.min(.1, (ts - last) / 1000); last = ts; T += dt;
-    render(T, dt);
+    var t1 = performance.now(); render(T, dt);
+    /* kalau menggambar satu frame terlalu lama, turunkan FPS canvas (mulus tapi ringan) */
+    cost += performance.now() - t1; if (++nC >= 40) { var avg = cost / nC; cost = 0; nC = 0; if (avg > 9 && FRAME < 50) FRAME = 50; else if (avg > 16 && FRAME < 66) FRAME = 66; }
   }
   function render(time, dt) {
     var nk = ST.nk == null ? .8 : ST.nk, day = ST.day || 0, p = ST.p || 0;
@@ -294,7 +302,7 @@
     drawFish(time, dt, k);
     if (mon.on) {
       mon.u += dt / mon.dur;
-      if (mon.u >= 1) { mon.on = false; mon.wait = 6 + rnd() * 10; }
+      if (mon.u >= 1) { mon.on = false; mon.wait = 30 + rnd() * 30; }
       else { ctx.globalAlpha = sm(0, .05, mon.u) * (1 - sm(.97, 1, mon.u)); drawMon(time, k); ctx.globalAlpha = 1; }
     } else { mon.wait -= dt; if (mon.wait <= 0) spawnMon(false); }
     drawBubbles(time, dt, k);
@@ -306,6 +314,7 @@
   }
   document.addEventListener('visibilitychange', sync);
   ST.sync = sync;
+  ST.setLite = function () { lite = true; FRAME = 50; size(); };
   var rt = 0, lw = 0;
   addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (innerWidth === lw) return; lw = innerWidth; size(); }, 200); });
   lw = innerWidth; size();

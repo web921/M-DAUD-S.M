@@ -40,3 +40,13 @@ Titanic: muncul di horizon (langit) dan sebagai bayangan di dasar laut (`.wreck`
 
 ## v14
 - Loading screen dibuat jauh lebih halus: seluruh animasi hanya memakai transform/opacity (GPU), tanpa blur/blend berat; isi website disembunyikan selama loading agar tidak membebani HP; garis sambungan gelombang dihilangkan; teks kedalaman diperbarui hemat.
+
+## v15 — Optimasi performa (tampilan tetap)
+- Animasi CSS aktif turun dari 106 menjadi ±17–30 saat scroll (langit, permukaan laut, dasar laut, kartu foto dijeda saat tidak terlihat; set kilau matahari/bulan yang tidak dipakai dijeda).
+- Canvas laut dalam: partikel digambar per kelompok, ikan tanpa save/restore, resolusi lebih hemat, FPS canvas turun otomatis jika perangkat lambat.
+- Governor otomatis: jika FPS nyata < 38 (atau mode Hemat Data), website pindah ke mode ringan (`html.lite`) tanpa mengubah desain utama.
+- Gambar awan 1100px → 800px (−100 KB), cover art di dalam mp3 dibuang (−0,3 MB), font Google dimuat tanpa memblokir render, bagian bawah halaman dirender saat mendekat (`content-visibility`), blur kaca 14px → 10px, lagu berikutnya di-preload saat musik diputar.
+
+## v16
+- Hewan laut dikurangi: ikan 1 kawanan kecil, ubur-ubur 1 (HP) / 2 (PC), rumput laut & burung lebih sedikit, monster muncul jarang (jeda 30–60 dtk), partikel -45%, canvas 25 FPS.
+- Suasana lebih nyata: vinyet sinematik lembut + butiran halus statis (`img/grain.webp`), tanpa animasi tambahan.

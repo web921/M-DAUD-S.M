@@ -16,7 +16,8 @@
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var coarse = matchMedia('(pointer: coarse)').matches;
   var cores = navigator.hardwareConcurrency || 8, mem = navigator.deviceMemory || 8;
-  var lite = (coarse && cores <= 4) || mem <= 2;
+  var sv = false; try { sv = !!(navigator.connection && navigator.connection.saveData) || sessionStorage.getItem('jd-lite') === '1'; } catch (e) {}
+  var lite = (coarse && cores <= 4) || mem <= 2 || sv;
   if (lite) root.classList.add('lite');
 
   /* ---------- util ---------- */
@@ -209,6 +210,11 @@
 
   /* ---------- update utama ---------- */
   var first = true, infoEl = $('skyInfo');
+  /* set kilau yang tidak terlihat dijeda (setelah fade-out selesai) agar tidak membuang tenaga */
+  function glintOff(el, off) {
+    clearTimeout(el._t);
+    if (!off) el.classList.remove('off'); else if (first) el.classList.add('off'); else el._t = setTimeout(function () { el.classList.add('off'); }, 4400);
+  }
   function update() {
     var t = nowHours(), alt = sunAlt(t), p = palette(t);
 
@@ -239,11 +245,12 @@
     var lenSun = (0.62 + 0.38 * warm) * Math.max(220, H * .52);
     gSun.style.height = lenSun.toFixed(0) + 'px';
     gSun.style.transform = 'translate3d(' + sx.toFixed(1) + 'px,0,0)';
-    gSun.style.opacity = (0.95 * smooth(-0.03, 0.1, alt)).toFixed(3);
+    var gsO = 0.95 * smooth(-0.03, 0.1, alt);
+    gSun.style.opacity = gsO.toFixed(3); glintOff(gSun, gsO < 0.01);
     gSun.style.setProperty('--gc', trip(mix([255, 240, 208], [255, 160, 84], warm)));
     gMoon.style.height = Math.max(200, H * .42).toFixed(0) + 'px';
     gMoon.style.transform = 'translate3d(' + mx.toFixed(1) + 'px,0,0)';
-    gMoon.style.opacity = (0.8 * moonOp).toFixed(3);
+    gMoon.style.opacity = (0.8 * moonOp).toFixed(3); glintOff(gMoon, moonOp < 0.01);
 
     var nk = nightK; RS.setProperty('--deep-op', (0.16 + 0.12 * clamp(alt, 0, 1) + 0.72 * nk).toFixed(3));
     /* siluet Titanic & monster: warna/cahaya mengikuti jam */
@@ -282,7 +289,7 @@
   if (window.ResizeObserver) { try { new ResizeObserver(measure).observe(document.body); } catch (e) {} }
   addEventListener('load', measure);
   var fmt = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
-  var ticking = false, K_PAR = 0.7;
+  var ticking = false, K_PAR = 0.7, gSky = null, gSurf = null, gBed = null;
   function apply() {
     ticking = false;
     var y = window.pageYOffset || 0, maxTr = Math.max(0, hz + seaH - H);
@@ -302,6 +309,11 @@
         gaugeD.style.top = (p * 100).toFixed(1) + '%';
       }
     }
+    /* hemat baterai & CPU: jeda animasi CSS yang sedang tidak terlihat */
+    var skyOff = tr >= hz, surfOff = tr >= hz + H * 0.66, bedOff = sb < 0.03;
+    if (skyOff !== gSky) { gSky = skyOff; root.classList.toggle('sky-off', skyOff); }
+    if (surfOff !== gSurf) { gSurf = surfOff; root.classList.toggle('surf-off', surfOff); }
+    if (bedOff !== gBed) { gBed = bedOff; root.classList.toggle('bed-off', bedOff); }
     shade.style.opacity = (Math.min(0.66, (y / (H * 1.15)) * 0.7) * (1 - 0.72 * sb)).toFixed(3);
     syncLoop();
   }
@@ -327,6 +339,30 @@
     }, 7000 + rnd() * 13000);
   }
 
+
+  /* ---------- governor performa: kalau FPS nyata rendah, otomatis pakai mode ringan ---------- */
+  function goLite(why) {
+    if (lite) return; lite = true; root.classList.add('lite'); root.dataset.perf = why || 'auto';
+    try { sessionStorage.setItem('jd-lite', '1'); } catch (e) {}
+    layout(); buildWaves(); buildClouds(); update(); apply();
+    if (ST.setLite) ST.setLite();
+  }
+  function watchFps() {
+    if (lite || reduce) return;
+    var n = 0, t0 = 0, last = 0, bad = 0, rounds = 0;
+    (function f(ts) {
+      if (document.hidden) { n = 0; t0 = 0; last = 0; return requestAnimationFrame(f); }
+      if (last) { var d = ts - last; if (d < 250) { n++; if (d > 30) bad++; } } last = ts; if (!t0) t0 = ts;
+      if (ts - t0 >= 2500) {
+        var fps = n / ((ts - t0) / 1000);
+        if (fps < 38 && bad / Math.max(n, 1) > 0.45) { if (++rounds >= 2) return goLite('fps'); } else rounds = 0;
+        n = 0; bad = 0; t0 = ts;
+        if (ts > 20000) return;       // berhenti memantau setelah 20 detik
+      }
+      requestAnimationFrame(f);
+    })(0);
+  }
+
   /* ---------- siklus hidup ---------- */
   var timer = 0;
   function init() {
@@ -335,6 +371,7 @@
     requestAnimationFrame(function () { requestAnimationFrame(function () { root.classList.remove('notrans'); }); });
     timer = setInterval(function () { if (!document.hidden) update(); }, SPEED ? 1000 : 30000);
     if (!reduce) scheduleShoot();
+    setTimeout(watchFps, 4600);   // mulai mengukur setelah loading screen selesai
     addEventListener('scroll', onScroll, { passive: true });
     var rt = 0;
     addEventListener('resize', function () {

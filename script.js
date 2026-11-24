@@ -187,6 +187,13 @@ function init() {
   $(".pbadge b").textContent = P.length;
   if (CONFIG.photo) $("#photo .bcard").outerHTML = `<img class="pimg" src="${esc(CONFIG.photo)}" alt="Foto profil ${esc(CONFIG.name)}" width="400" height="400" loading="lazy">`;
 
+
+  /* ---------- hemat CPU: animasi dijeda saat elemen di luar layar ---------- */
+  if ("IntersectionObserver" in window) {
+    const ag = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("inv", !e.isIntersecting)), { rootMargin: "80px 0px" });
+    $$(".pcard, .vis, .cta, .faqcta, .photo, .hstats").forEach(el => ag.observe(el));
+  }
+
   /* ---------- PROSES + FAQ ---------- */
   $("#steps").innerHTML = CONFIG.steps.map((s, i) => `<li class="gc spot rv" style="--d:${(i % 3) * .08}s"><span class="num">0${i + 1}</span><span class="ic">${ico(STEPI[i])}</span><h3>${esc(s[0])}</h3><p>${esc(s[1])}</p></li>`).join("");
   $$("#faqlist details").forEach(d => d.addEventListener("toggle", () => { if (d.open) $$("#faqlist details").forEach(o => o !== d && (o.open = false)); }));
@@ -260,13 +267,13 @@ function init() {
   if (bgm && mus) {
     bgm.volume = .6;
     /* Playlist: selalu mulai dari lagu_01 saat halaman dimuat; lagu_01 -> lagu_02 otomatis, lalu kembali ke lagu_01 */
-    const LIST = ["audio/lagu_01.mp3", "audio/lagu_02.mp3"]; let ti = 0;
+    const LIST = ["audio/lagu_01.mp3", "audio/lagu_02.mp3"]; let ti = 0, nx = null;
     const load = i => { ti = i; bgm.src = LIST[ti]; };
     load(0);
     bgm.addEventListener("ended", () => { load((ti + 1) % LIST.length); bgm.play().catch(() => {}); });
     const setOn = on => { mus.classList.toggle("on", on); mus.setAttribute("aria-pressed", on); const t = on ? "Hentikan musik" : "Putar musik"; mus.setAttribute("aria-label", t); mus.title = t; };
     mus.addEventListener("click", () => {
-      if (bgm.paused) { bgm.play().then(() => setOn(true)).catch(() => setOn(false)); }
+      if (bgm.paused) { bgm.play().then(() => { setOn(true); if (!nx) { nx = new Audio(); nx.preload = "auto"; nx.src = LIST[1]; } }).catch(() => setOn(false)); }
       else { bgm.pause(); setOn(false); load(0); }
     });
   }
