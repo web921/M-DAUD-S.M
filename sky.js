@@ -19,6 +19,10 @@
   var sv = false; try { sv = !!(navigator.connection && navigator.connection.saveData) || sessionStorage.getItem('jd-lite') === '1'; } catch (e) {}
   var lite = (coarse && cores <= 4) || mem <= 2 || sv;
   if (lite) root.classList.add('lite');
+  /* Parallax latar dijalankan browser (compositor) lewat scroll-timeline bila didukung: tidak lagi dikejar JS tiap frame = tidak patah-patah. Fallback: JS lama. */
+  var STL = false;
+  try { STL = !reduce && !!(window.CSS && CSS.supports && CSS.supports('animation-timeline', 'scroll()')); } catch (e) {}
+  if (STL) root.classList.add('stl');
 
   /* ---------- util ---------- */
   var clamp = function (x, a, b) { return Math.min(b, Math.max(a, x)); };
@@ -120,11 +124,16 @@
   function layout() {
     W = innerWidth; H = innerHeight; lastW = W; lastH = H;
     var small = W < 700;
-    hz = Math.round(H * (small ? 0.39 : 0.46));
+    var hzT = small ? 0.43 : 0.5, h1 = document.querySelector('#home h1');
+    if (h1) {                                   /* horizon tepat di bawah judul hero (tidak memotong tulisan) */
+      var top = 0, e = h1; while (e) { top += e.offsetTop || 0; e = e.offsetParent; }
+      hzT = clamp((top + h1.offsetHeight + 16) / H, 0.34, 0.62);
+    }
+    hz = Math.round(H * hzT);
     seaH = Math.round(H * 2.4);
     apexY = Math.max(98, hz * 0.27);
     RS.setProperty('--hz', hz + 'px'); RS.setProperty('--sea-h', seaH + 'px'); RS.setProperty('--vh', H + 'px');
-    buildStars(); buildGlints(); measure();
+    buildStars(); buildGlints(); measure(true);
   }
 
   function buildStars() {
@@ -164,7 +173,7 @@
   }
 
   function buildGlints() {
-    var n = W < 700 ? 15 : lite ? 12 : 24, maxW = clamp(W * 0.22, 110, 330);
+    var n = W < 700 ? 9 : lite ? 10 : 20, maxW = clamp(W * 0.22, 110, 330);
     [gSun, gMoon].forEach(function (el) {
       if (!el) return; el.textContent = '';
       var frag = document.createDocumentFragment(), i;
@@ -201,7 +210,7 @@
       [3, 46, 8, 210, .95, .05], [1, 34, 30, 260, .85, .3], [2, 28, 52, 320, .7, .55], [1, 22, 68, 400, .55, .8],
       [3, 26, 18, 300, .8, .2], [2, 40, 40, 240, .7, .65], [1, 18, 80, 480, .45, .45]];
     var AR = { 1: 2.564, 2: 1.933, 3: 1.634 }, small = innerWidth < 700, k = small ? 1.75 : 1;
-    if (lite) CL = CL.slice(0, 5);
+    if (lite || small) CL = CL.slice(0, 5);
     cloudsEl.innerHTML = CL.map(function (c) {
       return '<i class="cloud" style="--img:url(img/cloud' + c[0] + '.webp);--ar:' + AR[c[0]] + ';--w:' + (c[1] * k).toFixed(0) + ';--t:' + c[2] + ';--o:' + c[4] +
         ';--du:' + c[3] + 's;--de:-' + (c[3] * c[5]).toFixed(0) + 's;--x0:' + Math.round(lerp(-25, 95, c[5])) + '"></i>';
@@ -262,8 +271,10 @@
     RS.setProperty('--abyss-op', (0.66 + 0.26 * nk).toFixed(2));
     RS.setProperty('--bird-op', (0.9 * smooth(0.12, 0.4, alt) * (1 - nk)).toFixed(2));
     var dayK = clamp(alt, 0, 1);
-    RS.setProperty('--ray', (0.14 + 0.5 * dayK * (1 - nk) + 0.1 * nk).toFixed(2));
-    RS.setProperty('--bio', (0.35 + 0.65 * nk).toFixed(2));
+    rayV = 0.14 + 0.5 * dayK * (1 - nk) + 0.1 * nk; bioV = 0.35 + 0.65 * nk;
+    RS.setProperty('--ray', rayV.toFixed(2));
+    RS.setProperty('--bio', bioV.toFixed(2));
+    fade();
     ST.nk = nk; ST.day = dayK;
     RS.setProperty('--mist-op', (0.14 + 0.2 * Math.max(nk, warm * smooth(-0.1, 0.1, alt) * 0.7)).toFixed(2));
 
@@ -284,24 +295,56 @@
 
   /* ---------- scroll: laut makin dalam, langit naik pelan (parallax) ---------- */
   /* tinggi dokumen di-cache (untuk menghitung kedalaman selam 0..1) */
-  var docH = 0, lastDepth = -1, lastDv = -1;
-  function measure() { docH = Math.max(1, document.documentElement.scrollHeight - H); }
-  if (window.ResizeObserver) { try { new ResizeObserver(measure).observe(document.body); } catch (e) {} }
-  addEventListener('load', measure);
+  var docH = 0, lastDepth = -1, lastDv = -1, lastCr = -1, curP = 0, curCr = 0, rayV = .3, bioV = .8, lastDocSet = -1, maxTr = 0;
+  var K_PAR = 0.7;
+  var elCau = abyssEl && abyssEl.querySelector('.caustic'), elShf = abyssEl && abyssEl.querySelector('.shafts'), elJel = abyssEl && abyssEl.querySelector('.jelly'), elDm = $('dmist');
+  /* kabut/caustics/berkas/ubur-ubur: opasitas langsung di elemennya (BUKAN lewat variabel CSS di .abyss,
+     karena mengubah variabel itu saat scroll memaksa browser menghitung ulang seluruh lapisan laut). */
+  function fade() {
+    var p = curP, cr = curCr;
+    if (elCau) elCau.style.opacity = (rayV * .7 * (1 - p * .92) * (.04 + .96 * cr)).toFixed(3);
+    if (elShf) elShf.style.opacity = (rayV * (1 - p * .9) * (.05 + .95 * cr)).toFixed(3);
+    if (elJel) elJel.style.opacity = (bioV * .8 * cr).toFixed(3);
+    if (elDm) elDm.style.opacity = cr.toFixed(3);
+  }
+  /* variabel rentang scroll untuk animasi scroll-timeline (hanya diubah saat resize / tinggi halaman berubah jauh) */
+  function setRanges() {
+    if (!STL) return;
+    maxTr = Math.max(0, hz + seaH - H);
+    var wd = $('world'), mt = Math.max(0, maxTr), a = Math.min(hz, mt);
+    if (!wd) return;
+    wd.style.setProperty('--tr-max', mt.toFixed(0) + 'px');
+    wd.style.setProperty('--tr-rng', Math.max(1, mt / K_PAR).toFixed(0) + 'px');
+    wd.style.setProperty('--ab-from', (a / K_PAR).toFixed(0) + 'px');
+    wd.style.setProperty('--ab-d', (mt - a).toFixed(0) + 'px');
+    wd.style.setProperty('--bed-a', (.16 * docH).toFixed(0) + 'px');
+    wd.style.setProperty('--bed-b', (.97 * docH).toFixed(0) + 'px');
+    lastDocSet = docH;
+  }
+  function measure(force) {
+    docH = Math.max(1, document.documentElement.scrollHeight - H);
+    if (STL && (force || Math.abs(docH - lastDocSet) > docH * 0.01)) setRanges();
+  }
+  if (window.ResizeObserver) { try { new ResizeObserver(function () { measure(); }).observe(document.body); } catch (e) {} }
+  addEventListener('load', function () { measure(true); });
   var fmt = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
-  var ticking = false, K_PAR = 0.7, gSky = null, gSurf = null, gBed = null;
+  var ticking = false, gSky = null, gSurf = null, gBed = null;
   function apply() {
     ticking = false;
-    var y = window.pageYOffset || 0, maxTr = Math.max(0, hz + seaH - H);
+    var y = window.pageYOffset || 0;
+    maxTr = Math.max(0, hz + seaH - H);
     tr = Math.min(y * K_PAR, maxTr);
-    scene.style.transform = 'translate3d(0,' + (-tr).toFixed(1) + 'px,0)';
-    if (abyssEl) abyssEl.style.transform = 'translate3d(0,' + Math.max(0, tr - hz).toFixed(1) + 'px,0)';
+    if (!STL) {            /* fallback tanpa scroll-timeline */
+      scene.style.transform = 'translate3d(0,' + (-tr).toFixed(1) + 'px,0)';
+      if (abyssEl) abyssEl.style.transform = 'translate3d(0,' + Math.max(0, tr - hz).toFixed(1) + 'px,0)';
+    }
     /* kedalaman selam: 0 (permukaan) .. 1 (dasar laut, bangkai Titanic) */
-    if (!docH) measure();
+    if (!docH) measure(true);
     var p = clamp(y / docH, 0, 1), sb = smooth(0.16, 0.97, p);
     ST.p = p; ST.sb = sb;
-    if (seabedEl) seabedEl.style.transform = 'translate3d(0,' + ((1 - sb) * 104).toFixed(1) + '%,0)';
-    if (abyssEl && Math.abs(p - lastDv) > 0.01) { lastDv = p; abyssEl.style.setProperty('--dv', p.toFixed(3)); }
+    var cr = smooth(0.85, 1.9, y / H); ST.cr = cr;
+    if (Math.abs(cr - lastCr) > 0.01 || Math.abs(p - lastDv) > 0.01) { lastCr = cr; lastDv = p; curCr = cr; curP = p; fade(); }
+    if (!STL && seabedEl) seabedEl.style.transform = 'translate3d(0,' + ((1 - sb) * 104).toFixed(1) + '%,0)';
     if (gaugeM) {
       var d = Math.round(p * 380) * 10;
       if (d !== lastDepth) {
@@ -373,6 +416,10 @@
     if (!reduce) scheduleShoot();
     setTimeout(watchFps, 4600);   // mulai mengukur setelah loading screen selesai
     addEventListener('scroll', onScroll, { passive: true });
+    /* font & layout selesai -> hitung ulang posisi horizon sekali */
+    var relay = function () { var o = hz; layout(); if (hz !== o) { update(); apply(); } };
+    addEventListener('load', function () { setTimeout(relay, 400); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { setTimeout(relay, 200); });
     var rt = 0;
     addEventListener('resize', function () {
       clearTimeout(rt);

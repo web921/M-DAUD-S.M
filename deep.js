@@ -25,6 +25,11 @@
   var lerp = function (a, b, t) { return a + (b - a) * t; };
   var sm = function (a, b, x) { var t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
 
+  /* ---- PENGATURAN HEWAN (ubah di sini bila ingin lebih banyak / lebih sedikit) ---- */
+  var SHOW_MONSTER_MOBILE = false;      // monster raksasa di HP: mati (paling berat digambar)
+  var FISH_PC = 6, FISH_MOBILE = 4, FISH_LITE = 3;
+  var MON_WAIT_MIN = 70, MON_WAIT_RND = 60;   // jeda antar kemunculan monster (detik, PC)
+
   var W = 0, H = 0, dpr = 1, small = false;
   var snow = [], fish = [], bubbles = [], plank = [];
   var mon = { on: false };
@@ -38,7 +43,7 @@
     build();
   }
   function build() {
-    var i, nS = lite ? 12 : small ? 20 : 38, nP = lite ? 3 : small ? 5 : 9;
+    var i, nS = lite ? 8 : small ? 12 : 24, nP = lite ? 2 : small ? 3 : 6;
     snow = []; plank = []; fish = [];
     for (i = 0; i < nS; i++) {
       var z = rnd();                       // 0 = jauh, 1 = dekat
@@ -46,9 +51,11 @@
     }
     for (i = 0; i < nP; i++) plank.push({ x: rnd() * W, y: rnd() * H, ph: rnd() * TAU, sp: .6 + rnd() * 1.4, r: .8 + rnd() * 1.2, vx: (rnd() - .5) * 5, vy: (rnd() - .5) * 3 });
     /* dua kawanan ikan: satu di lapisan atas, satu di tengah (arah berlawanan) */
-    school(lite ? 4 : small ? 6 : 10, .2, 1, 0);          /* hanya satu kawanan kecil: hewan laut tidak mendominasi tampilan */
+    school(lite ? FISH_LITE : small ? FISH_MOBILE : FISH_PC, .2, 1, 0);          /* hanya satu kawanan kecil: hewan laut tidak mendominasi tampilan */
     spawnMon(true);
+    if (monsterAllowed()) { mon.on = false; mon.wait = 8; } else { mon.on = false; mon.wait = 60; }
   }
+  function monsterAllowed() { return !(lite || (small && !SHOW_MONSTER_MOBILE)); }
   function school(n, yy, dir, off) {
     var cx = { n: n, dir: dir, y0: H * yy, ya: H * .05, spd: 24 + rnd() * 12, t: off, f: [] }, i;
     for (i = 0; i < n; i++) cx.f.push({ ox: (rnd() - .5) * 150, oy: (rnd() - .5) * 70, ph: rnd() * TAU, s: 8 + rnd() * 6, sp: 5 + rnd() * 3 });
@@ -56,7 +63,7 @@
   }
 
   /* ---------- MONSTER: tulang punggung bergelombang + kepala + sirip ---------- */
-  var NS = 30;
+  var NS = 22;
   function spawnMon(initial) {
     var base = small ? W * 1.15 : Math.min(W * .8, 1180);
     mon.sc = .88 + rnd() * .24; mon.L = base * mon.sc;
@@ -96,8 +103,15 @@
     fin(.27, -1, L * .1, wph + 1.2, .55, k, true); fin(.56, -1, L * .07, wph + .3, .55, k, true);
 
     /* badan */
+    /* tepi lembut: salinan lebih lebar & transparan (efek air keruh, tanpa blur mahal) */
+    ctx.fillStyle = 'rgba(6,22,48,' + (k.a * .2).toFixed(3) + ')';
+    ctx.beginPath();
+    ctx.moveTo(sxA[0] + nxA[0] * wA[0] * 1.35, syA[0] + nyA[0] * wA[0] * 1.35);
+    for (i = 1; i < NS; i++) ctx.lineTo(sxA[i] + nxA[i] * wA[i] * 1.35, syA[i] + nyA[i] * wA[i] * 1.35);
+    for (i = NS - 1; i >= 0; i--) ctx.lineTo(sxA[i] - nxA[i] * wA[i] * 1.25, syA[i] - nyA[i] * wA[i] * 1.25);
+    ctx.closePath(); ctx.fill();
     var g = ctx.createLinearGradient(0, -Wm * 1.2, 0, Wm * 1.4);
-    g.addColorStop(0, 'rgba(2,7,18,' + k.a + ')'); g.addColorStop(.55, 'rgba(2,6,15,' + k.a + ')'); g.addColorStop(1, 'rgba(10,30,58,' + (k.a * .95) + ')');
+    g.addColorStop(0, 'rgba(16,50,92,' + (k.a * .92).toFixed(3) + ')'); g.addColorStop(.4, 'rgba(5,18,40,' + k.a + ')'); g.addColorStop(.75, 'rgba(2,8,20,' + k.a + ')'); g.addColorStop(1, 'rgba(8,30,58,' + (k.a * .8).toFixed(3) + ')');
     ctx.fillStyle = g;
     ctx.beginPath();
     ctx.moveTo(sxA[0] + nxA[0] * wA[0], syA[0] + nyA[0] * wA[0]);
@@ -119,7 +133,7 @@
     ctx.beginPath(); ctx.moveTo(sxA[1] + nxA[1] * wA[1], syA[1] + nyA[1] * wA[1]);
     for (i = 2; i < NS - 1; i++) ctx.lineTo(sxA[i] + nxA[i] * wA[i], syA[i] + nyA[i] * wA[i]);
     ctx.strokeStyle = 'rgba(120,215,255,' + (topLit * .1).toFixed(3) + ')'; ctx.lineWidth = Wm * .22; ctx.stroke();
-    ctx.strokeStyle = 'rgba(150,230,255,' + (topLit * .42).toFixed(3) + ')'; ctx.lineWidth = 1.3; ctx.stroke();
+    ctx.strokeStyle = 'rgba(150,230,255,' + (topLit * .24).toFixed(3) + ')'; ctx.lineWidth = 1.1; ctx.stroke();
 
     /* rusuk / sisik samar */
     ctx.strokeStyle = 'rgba(90,170,230,' + (k.rim * .1).toFixed(3) + ')'; ctx.lineWidth = 1; ctx.beginPath();
@@ -127,7 +141,7 @@
     ctx.stroke();
 
     /* titik bioluminescent di sisi perut */
-    for (i = 3; i < NS - 3; i += 2) {
+    for (i = 3; i < NS - 3; i += 3) {
       var pulse = .35 + .65 * Math.max(0, Math.sin(time * 1.4 - i * .55 + mon.ph));
       var dx = sxA[i] - nxA[i] * wA[i] * .5, dy = syA[i] - nyA[i] * wA[i] * .5, al = k.bio * pulse;
       ctx.fillStyle = 'rgba(80,235,255,' + (al * .13).toFixed(3) + ')'; ctx.beginPath(); ctx.arc(dx, dy, 6.5, 0, TAU); ctx.fill();
@@ -263,7 +277,7 @@
   }
   function drawBubbles(time, dt, k) {
     var sb = ST.sb || 0;
-    if (sb > .35 && bubbles.length < (lite ? 3 : 6) && rnd() < dt * 2.2) {
+    if (sb > .35 && bubbles.length < (lite || small ? 2 : 4) && rnd() < dt * 2.2) {
       var vx = W * (small ? .22 : .3) + (rnd() - .5) * 40;
       bubbles.push({ x: vx, y: H - H * (small ? .2 : .26) * sb, r: 1.5 + rnd() * 3, ph: rnd() * TAU, v: 22 + rnd() * 22 });
     }
@@ -277,7 +291,7 @@
   }
 
   /* ---------- loop ---------- */
-  var raf = 0, last = 0, T = 0, FRAME = lite ? 50 : 40, cost = 0, nC = 0;
+  var raf = 0, last = 0, T = 0, FRAME = (lite || small) ? 50 : 40, cost = 0, nC = 0;
   function frame(ts) {
     raf = requestAnimationFrame(frame);
     if (ts - last < FRAME) return;
@@ -287,24 +301,25 @@
     cost += performance.now() - t1; if (++nC >= 40) { var avg = cost / nC; cost = 0; nC = 0; if (avg > 9 && FRAME < 50) FRAME = 50; else if (avg > 16 && FRAME < 66) FRAME = 66; }
   }
   function render(time, dt) {
-    var nk = ST.nk == null ? .8 : ST.nk, day = ST.day || 0, p = ST.p || 0;
+    var nk = ST.nk == null ? .8 : ST.nk, day = ST.day || 0, p = ST.p || 0, cr = ST.cr || 0;   /* cr: 0 = permukaan (tanpa hewan) .. 1 = kedalaman */
     /* faktor kecerahan: malam = siluet jelas, siang = samar (tertutup air) */
     var k = {
       a: (.5 + .46 * nk).toFixed(3),
       rim: .45 + .55 * nk,
       bio: .35 + .65 * nk,
       eye: .55 + .45 * nk,
-      fish: (.34 + .22 * nk) * (1 - .35 * p),
-      snow: .55 + .45 * nk
+      fish: (.34 + .22 * nk) * (1 - .35 * p) * cr,
+      snow: (.55 + .45 * nk) * (.3 + .7 * cr)
     };
     ctx.clearRect(0, 0, W, H);
     drawSnow(time, dt, k);
-    drawFish(time, dt, k);
-    if (mon.on) {
+    if (cr > .02) drawFish(time, dt, k);
+    if (cr <= .02) { /* di permukaan: monster menunggu, belum berenang */ }
+    else if (mon.on) {
       mon.u += dt / mon.dur;
-      if (mon.u >= 1) { mon.on = false; mon.wait = 30 + rnd() * 30; }
-      else { ctx.globalAlpha = sm(0, .05, mon.u) * (1 - sm(.97, 1, mon.u)); drawMon(time, k); ctx.globalAlpha = 1; }
-    } else { mon.wait -= dt; if (mon.wait <= 0) spawnMon(false); }
+      if (mon.u >= 1) { mon.on = false; mon.wait = MON_WAIT_MIN + rnd() * MON_WAIT_RND; }
+      else { ctx.globalAlpha = sm(0, .05, mon.u) * (1 - sm(.97, 1, mon.u)) * cr; drawMon(time, k); ctx.globalAlpha = 1; }
+    } else { mon.wait -= dt; if (mon.wait <= 0) { if (monsterAllowed()) spawnMon(false); else mon.wait = 60; } }
     drawBubbles(time, dt, k);
   }
   function run() { return !document.hidden && ST.vis !== false && !reduce; }

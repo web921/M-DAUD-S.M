@@ -54,3 +54,30 @@ Titanic: muncul di horizon (langit) dan sebagai bayangan di dasar laut (`.wreck`
 ## v17
 - Tampilan mockup 3 jendela di hero dihapus; hero kini satu kolom, rata tengah (HP & PC).
 - Tekstur air baru: `img/caustic-v2.webp` (jaring cahaya caustics seamless 512px, ±49 KB), dua lapis bergerak berlawanan arah dengan skala berbeda; tetap hanya 2 animasi transform.
+
+## v18 — Polish tampilan (tetap ringan)
+- Kartu (keunggulan, layanan, proses, portfolio, kontak) kini kaca bening berwarna: tepi menyala per-kartu (cyan/ungu/hijau/kuning/merah muda/biru), sorot sudut, ikon berwarna, bayangan lembut.
+- Judul `em` lebih cerah (cyan → biru → ungu); eyebrow bertitik cahaya; garis cahaya kecil di bawah judul seksi.
+- Cahaya warna statis di belakang tiap seksi (memecah latar gelap polos) — tanpa animasi.
+- Grid keunggulan: 2×2 di HP, 4 sejajar ≥860px (tidak ada lagi kartu yatim 3+1 di tablet / mode desktop HP).
+- Hero: pita layanan berjalan (1 animasi transform, otomatis berhenti saat tidak terlihat), badge & statistik lebih jelas.
+- Tombol musik/WhatsApp/ke-atas di HP diperkecil agar tidak menutup teks.
+- Tidak ada gambar, font, atau library baru. Versi cache dinaikkan ke v18.
+
+## v19
+- Tulisan berjalan di hero dihapus.
+- Hewan laut (ikan, ubur-ubur, monster) TIDAK tampil di permukaan/hero; muncul perlahan setelah scroll turun ke kedalaman (`--cr` / `DeepState.cr` dari sky.js). Marine snow di permukaan juga dikurangi.
+- Monster lebih nyata: tepi lembut seperti air keruh, punggung diterangi cahaya permukaan & perut gelap, rim light halus; kabut air biru bertingkat di kedalaman.
+
+## v20 — permukaan
+- Horizon dihitung dari posisi judul hero (tepat di bawah judul) sehingga garis laut tidak memotong tulisan; dihitung ulang setelah font termuat.
+- Kapal horizon lebih kecil dan pucat berkabut (tidak lagi menabrak judul).
+- Pola jaring cahaya (caustics) & berkas sinar disembunyikan di permukaan, muncul bertahap saat menyelam (`--cr`).
+- Pantulan langit di air dekat horizon (gradasi statis).
+
+## v21 — Scroll mulus & hewan laut dikurangi
+- **Parallax langit/laut kini dijalankan browser** (CSS scroll-timeline, di compositor) — tidak lagi dikejar JavaScript tiap frame, jadi tidak patah-patah. Browser lama otomatis memakai cara JS yang lama (hasil posisi identik, sudah diuji).
+- **Hewan laut dikurangi**: ubur-ubur 3 → 1 (hanya PC, tidak ada di HP); burung 3 → 2 (HP: 1); rumput laut 5 → 3 (HP: 2); titik cahaya dasar laut 6 → 4 (HP: 3); ikan 10 → 6 (HP: 4); monster raksasa hanya di PC dan muncul tiap ±70–130 detik (di HP dimatikan; atur lewat `SHOW_MONSTER_MOBILE` di atas `deep.js`).
+- **Partikel**: salju laut 38 → 24 (HP: 12), plankton 9 → 6 (HP: 3); kanvas HP 20 FPS; tubuh monster 30 → 22 ruas.
+- **Penyebab patah-patah diperbaiki**: variabel CSS `--cr/--dv` tidak lagi diubah saat scroll (memicu hitung ulang seluruh lapisan laut) — opasitas diatur langsung; blur pada navbar/tombol menu di HP dihapus; `content-visibility` dihapus (hitch saat bagian bawah dirender); filter drop-shadow pada ubur-ubur & rumput laut dihapus; caustics 2 lapis → 1 lapis di HP; berkas sinar 4 → 2 di HP; awan HP 7 → 5; kilau matahari/bulan HP 15 → 9.
+- Cache dinaikkan ke v21 (`?v=21`, `sw.js`).

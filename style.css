@@ -463,13 +463,13 @@ html.lite .sun-halo{display:none}
 .abyss{position:absolute;left:0;right:0;top:0;height:var(--vh);pointer-events:none;will-change:transform;overflow:hidden;--dv:0}
 #deep{position:absolute;left:0;top:0;width:100%;height:100%}
 /* cahaya permukaan: caustics + berkas sinar, memudar makin dalam */
-.caustic{position:absolute;left:0;right:0;top:0;height:62%;overflow:hidden;opacity:calc(var(--ray)*.62*(1 - var(--dv)*.92));-webkit-mask-image:linear-gradient(#000 10%,transparent);mask-image:linear-gradient(#000 10%,transparent)}
+.caustic{position:absolute;left:0;right:0;top:0;height:62%;overflow:hidden;opacity:0;-webkit-mask-image:linear-gradient(#000 10%,transparent);mask-image:linear-gradient(#000 10%,transparent)}
 .caustic i{position:absolute;left:0;top:0;width:calc(100% + 400px);height:calc(100% + 400px);background:url(img/caustic-v2.webp) 0 0/380px 380px repeat;will-change:transform}
 .caustic .c1{animation:cau1 46s linear infinite}
 .caustic .c2{background-size:250px 250px;opacity:.55;animation:cau2 34s linear infinite}
 @keyframes cau1{to{transform:translate3d(-380px,-380px,0)}}
 @keyframes cau2{from{transform:translate3d(-250px,-250px,0)}to{transform:translate3d(0,0,0)}}
-.shafts{position:absolute;left:0;right:0;top:0;height:78%;opacity:calc(var(--ray)*(1 - var(--dv)*.9));-webkit-mask-image:linear-gradient(#000 5%,transparent);mask-image:linear-gradient(#000 5%,transparent)}
+.shafts{position:absolute;left:0;right:0;top:0;height:78%;opacity:0;-webkit-mask-image:linear-gradient(#000 5%,transparent);mask-image:linear-gradient(#000 5%,transparent)}
 .shafts i{position:absolute;top:-4%;height:108%;width:13vw;left:calc(var(--lx) - 24vw);background:linear-gradient(180deg,rgba(var(--glow),.42),rgba(var(--glow),.08) 60%,transparent);transform-origin:50% 0;transform:rotate(14deg);animation:shaft 9s ease-in-out infinite alternate;will-change:transform,opacity}
 .shafts i:nth-child(2){left:calc(var(--lx) - 8vw);width:8vw;animation-duration:12s;animation-delay:-3s}
 .shafts i:nth-child(3){left:calc(var(--lx) + 7vw);width:11vw;animation-duration:10.5s;animation-delay:-6s}
@@ -477,7 +477,7 @@ html.lite .sun-halo{display:none}
 @keyframes shaft{from{transform:rotate(12deg);opacity:.55}to{transform:rotate(17deg);opacity:1}}
 /* ubur-ubur bercahaya */
 .jelly{position:absolute;left:var(--x);top:0;width:var(--s);opacity:calc(var(--bio)*.8);animation:jrise var(--du) linear var(--de) infinite,jdrift 14s ease-in-out infinite alternate;will-change:transform}
-.jf{width:100%;height:auto;overflow:visible;filter:drop-shadow(0 0 10px rgba(90,220,255,.55))}
+.jf{width:100%;height:auto;overflow:visible}
 .jb{transform-box:fill-box;transform-origin:50% 20%;animation:jpulse 3.4s ease-in-out infinite}
 .jt{transform-box:fill-box;transform-origin:50% 0;animation:jsway 3.4s ease-in-out infinite}
 .j1{--x:12%;--s:46px;--du:58s;--de:-14s}.j2{--x:70%;--s:64px;--du:78s;--de:-52s}.j3{--x:44%;--s:34px;--du:66s;--de:-33s}
@@ -494,7 +494,7 @@ html.lite .sun-halo{display:none}
 @keyframes wdrift{from{transform:translate3d(-1.5vw,0,0)}to{transform:translate3d(1.5vw,5px,0)}}
 @keyframes wsway{from{transform:rotate(-7.6deg)}to{transform:rotate(-6.4deg)}}
 .dunes{position:absolute;left:0;bottom:0;width:100%;height:78%;max-width:none}
-.kelp{position:absolute;bottom:2%;width:clamp(26px,3.4vw,46px);max-width:none;overflow:visible;transform-origin:50% 100%;animation:ksway 5.5s ease-in-out infinite alternate;fill:none;stroke:#031724;stroke-width:5;stroke-linecap:round;filter:drop-shadow(0 0 3px rgba(80,200,255,.25))}
+.kelp{position:absolute;bottom:2%;width:clamp(26px,3.4vw,46px);max-width:none;overflow:visible;transform-origin:50% 100%;animation:ksway 5.5s ease-in-out infinite alternate;fill:none;stroke:#031724;stroke-width:5;stroke-linecap:round}
 .kelp .kb{stroke-width:5}
 .k1{left:5%;height:clamp(70px,16vh,150px)}.k2{left:20%;height:clamp(54px,12vh,110px);animation-delay:-2s}.k3{left:57%;height:clamp(64px,14vh,130px);animation-delay:-1s}.k4{left:79%;height:clamp(76px,17vh,160px);animation-delay:-3s}.k5{left:92%;height:clamp(56px,12vh,112px);animation-delay:-2.6s}
 .kelp{height:auto}
@@ -639,7 +639,7 @@ html.surf-off .waves *,html.surf-off .glint b,html.surf-off .sea-sheen{animation
 html.bed-off .seabed *,html.bed-off .seabed *::before,html.bed-off .seabed *::after{animation-play-state:paused!important}
 .glint.off,.glint.off b{animation-play-state:paused!important;visibility:hidden}
 /* bagian bawah halaman baru dirender saat mendekati layar */
-#proses,#faq,#kontak,.foot,footer{content-visibility:auto;contain-intrinsic-size:auto 760px}
+/* v21: content-visibility dihapus (menimbulkan hitch saat bagian bawah baru dirender sambil scroll) */
 /* kaca: blur sedikit lebih ringan, tampilan tetap sama */
 .glass,.glass2,.nav-in #menu{-webkit-backdrop-filter:blur(10px) saturate(1.3);backdrop-filter:blur(10px) saturate(1.3)}
 @media(max-width:899px){.glass,.glass2,.nav-in #menu{-webkit-backdrop-filter:none;backdrop-filter:none}}
@@ -661,3 +661,182 @@ html.lite .pc-img{animation:none}
 #world::after{content:"";position:absolute;inset:0;z-index:50;pointer-events:none;
   background:radial-gradient(ellipse 95% 80% at 50% 42%,transparent 55%,rgba(1,8,26,.42) 100%),url(img/grain.webp) 0 0/128px 128px;opacity:.32}
 html.lite #world::after{background:radial-gradient(ellipse 95% 80% at 50% 42%,transparent 55%,rgba(1,8,26,.36) 100%)}
+
+
+/* =====================================================================
+   v18 — POLISH: kartu berwarna & berkilau, judul cerah, hero hidup,
+   grid rapi di HP/tablet/PC. Hanya CSS statis (tanpa blur/animasi baru
+   yang berat) agar website tetap ringan.
+   ===================================================================== */
+:root{--c1:#22d3ee;--c2:#a78bfa;--c3:#34d399;--c4:#fbbf24;--c5:#fb7185;--c6:#60a5fa}
+
+/* --- judul: lebih cerah & kontras --- */
+h2 em,.about h2 em{background-image:linear-gradient(95deg,#8cf6ff 0,#9cc4ff 55%,#cbb5ff 100%)}
+.rotw span{background-image:linear-gradient(95deg,#a5f8ff,#7cc4ff 60%,#b9a8ff)}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;color:#d2f8ff;background:linear-gradient(180deg,rgba(var(--tint),.55),rgba(var(--tint),.35));border-color:rgba(94,234,255,.5)}
+.eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:#5eead4;box-shadow:0 0 10px 2px rgba(94,234,212,.7)}
+.head{position:relative}
+.head h2{text-wrap:balance}
+.head::after{content:"";display:block;width:64px;height:3px;margin:20px auto 0;border-radius:3px;background:linear-gradient(90deg,transparent,#5eead4,#7aa8ff,transparent);opacity:.85}
+.faqh::after{display:none}
+
+/* --- cahaya warna statis di belakang tiap section (memecah latar polos) --- */
+.sec{isolation:isolate}
+.sec::before{content:"";position:absolute;left:0;right:0;top:2%;height:min(520px,70vh);z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 55% 100% at 50% 40%,rgba(var(--sg,34,211,238),.14),rgba(var(--sg,34,211,238),.04) 60%,transparent)}
+#layanan{--sg:34,211,238}#portfolio{--sg:139,92,246}#tentang{--sg:56,189,248}#proses{--sg:16,185,129}#faq{--sg:99,102,241}#kontak{--sg:34,211,238}
+
+/* --- kartu: kaca bening berwarna, tepi menyala, sorot sudut --- */
+.gc{--a:var(--c1);
+  background:
+    radial-gradient(110% 90% at 0% 0%,color-mix(in srgb,var(--a) 20%,transparent),transparent 58%),
+    linear-gradient(165deg,rgba(18,48,104,.78),rgba(7,22,58,.74));
+  border:1px solid color-mix(in srgb,var(--a) 38%,rgba(255,255,255,.12));
+  box-shadow:0 14px 36px rgba(1,6,22,.42),inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 0 1px rgba(255,255,255,.02);
+  transition:transform .35s var(--ease),border-color .3s,box-shadow .35s}
+.gc:hover{border-color:color-mix(in srgb,var(--a) 75%,#fff 12%);box-shadow:0 22px 52px rgba(1,6,22,.55),0 0 38px color-mix(in srgb,var(--a) 28%,transparent),inset 0 1px 0 rgba(255,255,255,.2)}
+#why>li:nth-child(6n+1),#svc>article:nth-child(6n+1),#steps>li:nth-child(6n+1){--a:var(--c1)}
+#why>li:nth-child(6n+2),#svc>article:nth-child(6n+2),#steps>li:nth-child(6n+2){--a:var(--c2)}
+#why>li:nth-child(6n+3),#svc>article:nth-child(6n+3),#steps>li:nth-child(6n+3){--a:var(--c3)}
+#why>li:nth-child(6n+4),#svc>article:nth-child(6n+4),#steps>li:nth-child(6n+4){--a:var(--c4)}
+#why>li:nth-child(6n+5),#svc>article:nth-child(6n+5),#steps>li:nth-child(6n+5){--a:var(--c5)}
+#why>li:nth-child(6n+6),#svc>article:nth-child(6n+6),#steps>li:nth-child(6n+6){--a:var(--c6)}
+#contacts>.ct{--a:#25d366}
+.proj{--a:var(--accent,var(--c1))}
+.proj{background:
+    radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--a) 16%,transparent),transparent 60%),
+    linear-gradient(165deg,rgba(16,44,98,.78),rgba(5,17,46,.8))}
+.ic{color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--a,#22d3ee) 70%,#0b2a66),color-mix(in srgb,var(--a,#22d3ee) 28%,#0a1f55));border:1px solid color-mix(in srgb,var(--a,#22d3ee) 60%,rgba(255,255,255,.3));box-shadow:0 8px 22px color-mix(in srgb,var(--a,#22d3ee) 35%,transparent),inset 0 1px 0 rgba(255,255,255,.3)}
+.gc:hover .ic{transform:translateY(-2px) scale(1.06)}
+.ic{transition:transform .35s var(--ease)}
+.bento li [data-icon]{color:var(--a)}
+.bento article{border-color:color-mix(in srgb,var(--a) 38%,rgba(255,255,255,.12))}
+.lnk{color:color-mix(in srgb,var(--a) 55%,#fff)}
+.steps .num{font-size:3.6rem;color:transparent;-webkit-text-stroke:1.2px color-mix(in srgb,var(--a) 55%,transparent);opacity:.85}
+.whygrid h3,.bento h3,.steps h3{letter-spacing:-.01em}
+.whygrid p,.steps p,.bento .tx p{color:rgba(255,255,255,.88)}
+
+/* --- keunggulan: 2x2 di HP, 4 sejajar di tablet/PC (tidak ada kartu yatim) --- */
+.whygrid{grid-template-columns:repeat(2,1fr);gap:12px}
+.whygrid li{padding:18px 16px;border-radius:20px}
+.whygrid li .ic{width:44px;height:44px;border-radius:14px;font-size:1.3rem}
+.whygrid h3{margin:12px 0 4px;font-size:1rem}
+.whygrid p{font-size:.86rem;line-height:1.5}
+@media(min-width:860px){.whygrid{grid-template-columns:repeat(4,1fr);gap:18px}.whygrid li{padding:26px;border-radius:24px}.whygrid li .ic{width:52px;height:52px;border-radius:16px;font-size:1.5rem}.whygrid h3{font-size:1.12rem;margin:16px 0 6px}.whygrid p{font-size:.95rem}}
+.why{padding-top:0;margin-top:-10px}
+
+/* --- hero --- */
+.hero-in{gap:0}
+.badge{background:linear-gradient(180deg,rgba(var(--tint),.7),rgba(var(--tint),.5));border-color:rgba(94,234,255,.7);box-shadow:0 0 26px rgba(34,211,238,.35),inset 0 1px 0 rgba(255,255,255,.2)}
+.hdesc{color:#fff;text-shadow:0 2px 18px rgba(2,10,34,.8),0 0 2px rgba(2,10,34,.5)}
+.btn.wa.lg{box-shadow:0 14px 34px rgba(22,163,74,.5),0 0 0 1px rgba(255,255,255,.18) inset,inset 0 1px 0 rgba(255,255,255,.4)}
+.btn.out{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.75)}
+.hstats{background:linear-gradient(180deg,rgba(var(--tint),.62),rgba(var(--tint),.42));border-color:rgba(160,235,255,.35);box-shadow:0 18px 48px rgba(2,10,34,.35),inset 0 1px 0 rgba(255,255,255,.2)}
+.hstats b{background:linear-gradient(180deg,#fff,#8cf0ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.hstats span.l{color:#e6f6ff}
+@media(min-width:1040px){.hero{padding-bottom:96px}}
+
+/* --- portfolio --- */
+.chip{background:linear-gradient(180deg,rgba(18,48,104,.7),rgba(7,22,58,.7))}
+.chip.on{background:linear-gradient(135deg,#3aa8ff,#1c5bff);box-shadow:0 8px 24px rgba(31,120,255,.5),inset 0 1px 0 rgba(255,255,255,.35)}
+.proj{border-radius:26px;overflow:hidden}
+.proj::after{content:"";position:absolute;left:0;right:0;top:0;height:3px;z-index:3;pointer-events:none;background:linear-gradient(90deg,transparent,var(--a),transparent);opacity:.9}
+.sbar{background:rgba(255,255,255,.06)}
+.pb>p{color:rgba(255,255,255,.86)}
+.chips span{background:color-mix(in srgb,var(--a,#22d3ee) 14%,rgba(255,255,255,.06));border-color:color-mix(in srgb,var(--a,#22d3ee) 34%,rgba(255,255,255,.1))}
+
+/* --- tentang & CTA & FAQ & kontak --- */
+.faq details{background:linear-gradient(180deg,rgba(18,48,104,.62),rgba(7,22,58,.62))}
+.faq details[open]{border-color:rgba(122,231,255,.55);box-shadow:0 12px 36px rgba(1,6,22,.4),0 0 30px rgba(34,211,238,.12)}
+.faq summary{min-height:56px}
+.cta{background:radial-gradient(90% 120% at 50% 0%,rgba(47,140,255,.3),transparent 62%),linear-gradient(165deg,rgba(18,48,104,.82),rgba(7,22,58,.8));border-color:rgba(122,231,255,.4);box-shadow:0 26px 70px rgba(1,6,22,.5),0 0 60px rgba(34,211,238,.14),inset 0 1px 0 rgba(255,255,255,.18)}
+.cta h2{text-wrap:balance}
+.ct{border-color:rgba(37,211,102,.4)}
+.ct .ic{--a:#25d366}
+footer{background:linear-gradient(180deg,transparent,rgba(1,4,14,.5) 40%)}
+.foot h4{color:#bfeaff}
+
+/* --- tombol melayang di HP: lebih kecil agar tidak menutup teks --- */
+@media(max-width:639px){
+  .fab{width:52px;height:52px}
+  .mus{--wa-h:52px;width:46px;height:46px;right:max(19px,var(--sa-r))}
+  .mus-ic{transform:scale(.92)}
+  .top{width:42px;height:42px}
+  .fab,.mus{box-shadow:0 8px 22px rgba(2,10,34,.5)}
+  main{padding-right:0}
+  .pb>p,.whygrid p,.bento .tx p{padding-right:0}
+}
+
+/* --- tablet / layar kecil --- */
+@media(min-width:700px) and (max-width:1099px){
+  .hero{min-height:min(100svh,760px)}
+  .bento{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ringan: efek sekunder dimatikan di mode lite */
+html.lite .sec::before{opacity:.7}
+
+
+/* =====================================================================
+   v19 — hewan laut hanya di kedalaman + air lebih nyata
+   --cr (0 = permukaan, 1 = kedalaman) diisi sky.js dari posisi scroll.
+   ===================================================================== */
+.jelly{opacity:0}
+/* kabut air bertingkat: jarak jauh tampak biru pekat, bukan hitam polos (statis). Lapisan .dmist diatur opasitasnya oleh sky.js */
+.abyss::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 40%,rgba(2,10,30,.28))}
+.dmist{position:absolute;inset:0;pointer-events:none;opacity:0;
+  background:
+    radial-gradient(ellipse 130% 34% at 50% 58%,rgba(24,90,160,.16),transparent 70%),
+    radial-gradient(ellipse 100% 30% at 30% 24%,rgba(40,120,190,.10),transparent 70%)}
+
+
+/* =====================================================================
+   v20 — PERMUKAAN: horizon di bawah judul, kapal jauh berkabut,
+   pantulan langit di air, tanpa pola kolam di permukaan.
+   ===================================================================== */
+/* kapal di kejauhan: kecil, pucat berkabut (perspektif atmosfer), bukan siluet gelap */
+.hship{width:clamp(64px,8.5vw,128px);opacity:.78;--sil:color-mix(in srgb,var(--sil-h) 55%,var(--sky-hz))}
+/* jaring cahaya & berkas sinar hanya ada di bawah air: tidak tampil di permukaan */
+/* pantulan langit: air dekat horizon lebih terang, makin ke bawah makin gelap */
+.sea::after{content:"";position:absolute;left:0;right:0;top:0;height:min(52vh,460px);pointer-events:none;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--sky-hz) 58%,transparent) 0,color-mix(in srgb,var(--sky-low) 30%,transparent) 30%,color-mix(in srgb,var(--sky-mid) 10%,transparent) 62%,transparent)}
+/* kilau tepi horizon lebih tajam */
+.hline{height:2px;box-shadow:0 0 14px 2px rgba(var(--glow),.35)}
+/* hero: teks tetap terbaca di atas pantulan */
+.hero::before{background:radial-gradient(ellipse 72% 46% at 50% 56%,rgba(2,8,26,.26),transparent 72%)}
+/* kata berganti di judul: lebih pekat agar terbaca di langit siang */
+.rotw span{background-image:linear-gradient(95deg,#63ecff,#42a6ff 58%,#a98bff);filter:drop-shadow(0 2px 10px rgba(2,10,34,.75)) drop-shadow(0 0 2px rgba(2,10,34,.45))}
+
+
+/* =====================================================================
+   v21 — PERFORMA: scroll mulus, hewan laut dikurangi (tampilan tetap)
+   ===================================================================== */
+/* 1) Parallax latar dijalankan compositor browser (scroll-timeline); JS hanya fallback.
+      Variabel rentang (--tr-max, dst.) diisi sky.js pada #world. */
+@supports (animation-timeline:scroll()){
+  html.stl .scene{animation:sceneUp linear both;animation-timeline:scroll(root block);animation-range:0px var(--tr-rng,1px)}
+  html.stl .abyss{animation:abyssUp linear both;animation-timeline:scroll(root block);animation-range:var(--ab-from,0px) var(--tr-rng,1px)}
+  html.stl .seabed{animation:bedUp cubic-bezier(.3333,0,.6667,1) both;animation-timeline:scroll(root block);animation-range:var(--bed-a,0px) var(--bed-b,1px)}
+  @keyframes sceneUp{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,calc(var(--tr-max,0px)*-1),0)}}
+  @keyframes abyssUp{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,var(--ab-d,0px),0)}}
+  @keyframes bedUp{from{transform:translate3d(0,104%,0)}to{transform:translate3d(0,0,0)}}
+}
+/* 2) Hewan & animasi laut dikurangi */
+.jelly{filter:none}
+.birds .bird:nth-child(n+3){display:none}
+.shafts i:nth-child(4){display:none}
+.kelp.k2,.kelp.k5{display:none}
+.bd:nth-of-type(n+5){display:none}
+@media(max-width:899px){
+  .jelly,.caustic .c2,.shafts i:nth-child(n+3),.birds .bird:nth-child(n+2),.kelp.k3,.bd:nth-of-type(n+4){display:none}
+  /* navbar & tombol: blur dihapus di HP (blur di atas konten yang bergerak = penyebab utama patah-patah) */
+  .nav.stuck,.burger{-webkit-backdrop-filter:none;backdrop-filter:none}
+  .nav.stuck{background:rgba(var(--tint),.97)}
+  .burger{background:rgba(var(--tint),.8)}
+  .shade{will-change:auto}
+}
+/* 3) Animasi dekoratif di bawah kartu dijeda saat tidak terlihat; bayangan berat dikurangi di HP */
+@media(max-width:899px){
+  .fl{animation:none}
+  .bglow,.cta-glow,.pc-glow,.pc-halo{animation:none}
+}
