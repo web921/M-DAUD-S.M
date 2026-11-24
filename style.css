@@ -464,11 +464,11 @@ html.lite .sun-halo{display:none}
 #deep{position:absolute;left:0;top:0;width:100%;height:100%}
 /* cahaya permukaan: caustics + berkas sinar, memudar makin dalam */
 .caustic{position:absolute;left:0;right:0;top:0;height:62%;overflow:hidden;opacity:calc(var(--ray)*.62*(1 - var(--dv)*.92));-webkit-mask-image:linear-gradient(#000 10%,transparent);mask-image:linear-gradient(#000 10%,transparent)}
-.caustic i{position:absolute;left:0;top:0;width:calc(100% + 360px);height:calc(100% + 360px);background:url(img/caustic.webp) 0 0/300px 300px repeat;will-change:transform}
+.caustic i{position:absolute;left:0;top:0;width:calc(100% + 400px);height:calc(100% + 400px);background:url(img/caustic-v2.webp) 0 0/380px 380px repeat;will-change:transform}
 .caustic .c1{animation:cau1 46s linear infinite}
-.caustic .c2{background-size:210px 210px;opacity:.7;animation:cau2 34s linear infinite}
-@keyframes cau1{to{transform:translate3d(-300px,-300px,0)}}
-@keyframes cau2{from{transform:translate3d(-210px,-210px,0)}to{transform:translate3d(0,0,0)}}
+.caustic .c2{background-size:250px 250px;opacity:.55;animation:cau2 34s linear infinite}
+@keyframes cau1{to{transform:translate3d(-380px,-380px,0)}}
+@keyframes cau2{from{transform:translate3d(-250px,-250px,0)}to{transform:translate3d(0,0,0)}}
 .shafts{position:absolute;left:0;right:0;top:0;height:78%;opacity:calc(var(--ray)*(1 - var(--dv)*.9));-webkit-mask-image:linear-gradient(#000 5%,transparent);mask-image:linear-gradient(#000 5%,transparent)}
 .shafts i{position:absolute;top:-4%;height:108%;width:13vw;left:calc(var(--lx) - 24vw);background:linear-gradient(180deg,rgba(var(--glow),.42),rgba(var(--glow),.08) 60%,transparent);transform-origin:50% 0;transform:rotate(14deg);animation:shaft 9s ease-in-out infinite alternate;will-change:transform,opacity}
 .shafts i:nth-child(2){left:calc(var(--lx) - 8vw);width:8vw;animation-duration:12s;animation-delay:-3s}
@@ -550,21 +550,13 @@ h1,h2,.h1-main{text-wrap:balance}
 @media(min-width:1200px){.gauge{display:flex}}
 /* HERO PC: teks kiri + mockup kanan */
 @media(min-width:1040px){
-  .hero{padding-top:calc(var(--navh) + var(--sa-t) + 56px);padding-bottom:110px;text-align:left;min-height:min(100vh,860px)}
-  .hero-in{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);column-gap:clamp(28px,4vw,64px);align-items:center;justify-items:start}
-  .hero-in>*{grid-column:1}
-  .hero-in>.vis{grid-column:2;grid-row:1/7;width:100%;margin-top:0;justify-self:center}
-  .hero h1{align-items:flex-start;max-width:none;font-size:clamp(2.4rem,3.75vw,3.9rem)}
-  .rotw{justify-items:start}
-  .hdesc{max-width:560px}
-  .hbtns{justify-content:flex-start}
-  .hstats{align-self:flex-start}
+  .hero{padding-top:calc(var(--navh) + var(--sa-t) + 56px);padding-bottom:120px}
+  .hero h1{font-size:clamp(2.8rem,4.6vw,4.9rem);max-width:15em}
+  .hdesc{max-width:640px;font-size:1.12rem}
 }
+.hero{min-height:min(100svh,880px);display:flex;align-items:center;justify-content:center}
 /* HERO: kartu mockup lebih hidup */
 .win{box-shadow:0 30px 70px rgba(1,6,22,.6),0 0 0 1px rgba(160,230,255,.12),inset 0 1px 0 rgba(255,255,255,.14)}
-.vis::before{content:"";position:absolute;inset:-8% -6%;z-index:-1;background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(60,170,255,.22),transparent 70%);filter:blur(6px)}
-@media(prefers-reduced-motion:no-preference){.w1{animation:wf1 9s ease-in-out infinite alternate}.w2{animation:wf2 11s ease-in-out infinite alternate}.w3{animation:wf3 10s ease-in-out infinite alternate}}
-@keyframes wf1{to{transform:rotate(-2deg) translateY(-7px)}}@keyframes wf2{to{transform:rotate(1.5deg) translateY(8px)}}@keyframes wf3{to{transform:rotate(-1deg) translateY(-6px)}}
 /* judul seksi: garis cahaya kecil */
 .eyebrow{box-shadow:0 0 22px rgba(34,211,238,.18)}
 /* tombol: kilau lembut */

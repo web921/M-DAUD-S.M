@@ -50,3 +50,7 @@ Titanic: muncul di horizon (langit) dan sebagai bayangan di dasar laut (`.wreck`
 ## v16
 - Hewan laut dikurangi: ikan 1 kawanan kecil, ubur-ubur 1 (HP) / 2 (PC), rumput laut & burung lebih sedikit, monster muncul jarang (jeda 30–60 dtk), partikel -45%, canvas 25 FPS.
 - Suasana lebih nyata: vinyet sinematik lembut + butiran halus statis (`img/grain.webp`), tanpa animasi tambahan.
+
+## v17
+- Tampilan mockup 3 jendela di hero dihapus; hero kini satu kolom, rata tengah (HP & PC).
+- Tekstur air baru: `img/caustic-v2.webp` (jaring cahaya caustics seamless 512px, ±49 KB), dua lapis bergerak berlawanan arah dengan skala berbeda; tetap hanya 2 animasi transform.

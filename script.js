@@ -107,10 +107,6 @@ function init() {
   /* ---------- HERO: statistik + visual dari screenshot nyata ---------- */
   const cats = [...new Set(P.map(p => p.filter))];
   $("#stats").innerHTML = [[P.length + "+", "Proyek nyata"], [cats.length, "Kategori proyek"], ["100%", "Responsive HP & PC"]].map(s => `<li><b>${s[0]}</b><span class="l">${s[1]}</span></li>`).join("");
-  const hs = CONFIG.hero.map(k => P.find(p => p.slug === k)).filter(Boolean);
-  $("#vis").innerHTML = hs.map((p, i) => `<div class="win w${i + 1}"><div class="bar"><s></s><s></s><s></s></div><img src="${esc(p.img)}" alt="" width="800" height="500" ${i ? 'loading="lazy"' : 'fetchpriority="high"'}></div>`).join("") +
-    `<span class="fl f1"><i class="dot"></i>${P.length}+ Website Live</span><span class="fl f2">&lt;/&gt; Custom Code</span><span class="fl f3">✓ 100% Responsive</span>`;
-
   /* kata berganti di judul hero */
   const rot = $$("#rot span"); let ri = 0;
   if (rot.length > 1 && !reduce) setInterval(() => { if (document.hidden) return; rot[ri].classList.remove("on"); ri = (ri + 1) % rot.length; rot[ri].classList.add("on"); }, 2600);
@@ -191,7 +187,7 @@ function init() {
   /* ---------- hemat CPU: animasi dijeda saat elemen di luar layar ---------- */
   if ("IntersectionObserver" in window) {
     const ag = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("inv", !e.isIntersecting)), { rootMargin: "80px 0px" });
-    $$(".pcard, .vis, .cta, .faqcta, .photo, .hstats").forEach(el => ag.observe(el));
+    $$(".pcard, .cta, .faqcta, .photo, .hstats").forEach(el => ag.observe(el));
   }
 
   /* ---------- PROSES + FAQ ---------- */
