@@ -173,7 +173,7 @@
   }
 
   function buildGlints() {
-    var n = W < 700 ? 9 : lite ? 10 : 20, maxW = clamp(W * 0.22, 110, 330);
+    var n = W < 700 ? 6 : lite ? 8 : 14, maxW = clamp(W * 0.22, 110, 330);
     [gSun, gMoon].forEach(function (el) {
       if (!el) return; el.textContent = '';
       var frag = document.createDocumentFragment(), i;
@@ -192,7 +192,9 @@
     var L = [ // top(vh), tinggi(vh), harmonik [k1,k2,k3], amplitudo, detik drift, arah, opasitas, detik bob
       [.006, .05, [12, 18, 30], 4, 70, 'normal', .55, 6.5], [.03, .06, [8, 15, 24], 5, 54, 'reverse', .6, 8.2], [.07, .08, [6, 11, 20], 6, 44, 'normal', .65, 7.1],
       [.12, .10, [4, 9, 14], 8, 36, 'reverse', .7, 9.3], [.19, .13, [3, 7, 13], 10, 29, 'normal', .75, 8.6], [.28, .16, [2, 5, 9], 13, 24, 'reverse', .8, 10.4], [.40, .20, [2, 3, 7], 16, 19, 'normal', .85, 11.7]];
-    if (lite || innerWidth < 700) L = innerWidth < 700 && !lite ? L.filter(function (_, i) { return i !== 1 && i !== 4; }) : [L[0], L[2], L[4], L[6]];
+    /* v22: ombak dikurangi — HP/lite 3 lapis (tipis di atas, tebal di bawah), PC 5 lapis */
+    if (lite || innerWidth < 700) L = [L[0], L[3], L[6]];
+    else L = L.filter(function (_, i) { return i !== 1 && i !== 4; });
     wavesEl.innerHTML = L.map(function (w, n) {
       var h = w[2], A = w[3], d = '', x, y, ph = [n * 1.7, n * 2.9 + 1, n * .7 + 2.2];
       for (x = 0; x <= 1440; x += 10) {

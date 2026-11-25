@@ -222,7 +222,7 @@ function init() {
   addEventListener("scroll", () => { if (!tk) { tk = true; requestAnimationFrame(onScroll); } }, { passive: true }); onScroll();
 
   /* reveal + menu aktif */
-  const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .1, rootMargin: "0px 0px -5% 0px" }) : null;
+  const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0, rootMargin: "0px 0px 28% 0px" }   /* v23: tampil SEBELUM masuk layar -> tidak ada kotak kosong/berkedip saat scroll cepat */) : null;
   $$(".rv").forEach(el => io ? io.observe(el) : el.classList.add("in"));
   if ("IntersectionObserver" in window) {
     const links = $$("#menu a[href^='#']");

@@ -81,3 +81,14 @@ Titanic: muncul di horizon (langit) dan sebagai bayangan di dasar laut (`.wreck`
 - **Partikel**: salju laut 38 → 24 (HP: 12), plankton 9 → 6 (HP: 3); kanvas HP 20 FPS; tubuh monster 30 → 22 ruas.
 - **Penyebab patah-patah diperbaiki**: variabel CSS `--cr/--dv` tidak lagi diubah saat scroll (memicu hitung ulang seluruh lapisan laut) — opasitas diatur langsung; blur pada navbar/tombol menu di HP dihapus; `content-visibility` dihapus (hitch saat bagian bawah dirender); filter drop-shadow pada ubur-ubur & rumput laut dihapus; caustics 2 lapis → 1 lapis di HP; berkas sinar 4 → 2 di HP; awan HP 7 → 5; kilau matahari/bulan HP 15 → 9.
 - Cache dinaikkan ke v21 (`?v=21`, `sw.js`).
+
+## v22 — Hero lebih terbaca, tombol melayang tidak menutupi, lebih ringan
+- Kabut gelap tipis di belakang teks hero (judul & deskripsi tetap jelas di langit senja); kartu statistik lebih solid sehingga garis ombak tidak tembus.
+- HP: tombol musik & WhatsApp diperkecil, tombol "ke atas" disembunyikan (sebelumnya menutupi teks kartu); filter drop-shadow teks gradasi dihapus.
+- Ombak: HP 5 → 3 lapis, PC 7 → 5; kilau matahari/bulan: HP 9 → 6, PC 20 → 14.
+- Cache dinaikkan ke v22 (`?v=22`, `sw.js`).
+
+## v23 — Bagian "Tentang" mulus & layar tidak berkedip
+- Kartu foto: sinar (blur + mix-blend), gelembung, halo berputar, foto melayang, animasi box-shadow, dan blur kaca di atas foto dimatikan di HP (statis); di PC sinar dibuat tanpa blur/blend. Animasi aktif di bagian itu 22 → 8.
+- Berkedip: tepi keras di awal tiap section (cahaya warna section) dibuat memudar; caustic & berkas sinar di HP statis (mask + animasi bersama = berkedip); navbar HP penuh solid (teks tidak tembus); konten kini ditampilkan SEBELUM masuk layar (tidak ada kotak kosong yang muncul belakangan), transisi 0,45 dtk.
+- Cache dinaikkan ke v23.

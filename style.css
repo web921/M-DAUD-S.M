@@ -683,7 +683,7 @@ h2 em,.about h2 em{background-image:linear-gradient(95deg,#8cf6ff 0,#9cc4ff 55%,
 /* --- cahaya warna statis di belakang tiap section (memecah latar polos) --- */
 .sec{isolation:isolate}
 .sec::before{content:"";position:absolute;left:0;right:0;top:2%;height:min(520px,70vh);z-index:-1;pointer-events:none;
-  background:radial-gradient(ellipse 55% 100% at 50% 40%,rgba(var(--sg,34,211,238),.14),rgba(var(--sg,34,211,238),.04) 60%,transparent)}
+  background:radial-gradient(ellipse closest-side at 50% 50%,rgba(var(--sg,34,211,238),.14),rgba(var(--sg,34,211,238),.05) 55%,transparent)}   /* v23: memudar sempurna di tepi kotak -> tidak ada garis/tepi keras saat scroll */
 #layanan{--sg:34,211,238}#portfolio{--sg:139,92,246}#tentang{--sg:56,189,248}#proses{--sg:16,185,129}#faq{--sg:99,102,241}#kontak{--sg:34,211,238}
 
 /* --- kartu: kaca bening berwarna, tepi menyala, sorot sudut --- */
@@ -839,4 +839,54 @@ html.lite .sec::before{opacity:.7}
 @media(max-width:899px){
   .fl{animation:none}
   .bglow,.cta-glow,.pc-glow,.pc-halo{animation:none}
+}
+
+
+/* =====================================================================
+   v22 — keterbacaan hero, tombol melayang tidak menutupi konten, lebih ringan
+   ===================================================================== */
+/* kabut gelap tipis di belakang teks hero: tulisan tetap jelas walau langit senja sedang terang (statis, murah) */
+.hero{isolation:isolate}
+.hero::after{content:"";position:absolute;inset:3% 0 1%;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 64% 48% at 50% 52%,rgba(3,16,46,.50),rgba(3,16,46,.20) 56%,transparent 80%)}
+.hdesc{font-weight:500;text-shadow:0 1px 3px rgba(2,10,34,.55),0 2px 18px rgba(2,10,34,.75)}
+@media(max-width:899px){
+  /* filter drop-shadow pada teks gradasi = lapisan render ekstra; kabut di atas sudah menjaga kontras */
+  .h1-main,.rotw span,h2 em,.about h2 em{filter:none}
+  .hstats.glass{background:rgba(7,26,62,.80)}      /* garis ombak tidak tembus di balik kartu statistik */
+}
+@media(max-width:639px){
+  /* tombol melayang lebih kecil & tombol ke-atas disembunyikan di HP (sebelumnya menutupi teks kartu) */
+  .fab{width:50px;height:50px}
+  .mus{--wa-h:50px;width:42px;height:42px;right:max(18px,var(--sa-r))}
+  .mus-ic{width:22px;height:22px}.mus-ic svg{width:20px;height:20px}
+  .top{display:none}
+}
+
+
+/* =====================================================================
+   v23 — bagian foto "Tentang" mulus + tampilan tidak berkedip
+   Penyebab: sinar (blur + mix-blend), gelembung, halo berputar, foto melayang bermasker+filter,
+   animasi box-shadow, dan blur kaca di atas konten bergerak -> digambar ulang tiap frame.
+   ===================================================================== */
+/* sinar kartu foto: tanpa filter blur & blend (kerucut lembut dari gradasi radial) — PC */
+.pc-ray{filter:none;mix-blend-mode:normal;background:radial-gradient(ellipse 50% 100% at 50% 0%,rgba(170,235,255,.30),transparent 72%)}
+/* munculnya konten: cepat & tanpa geser, supaya terasa halus */
+@media(max-width:899px){
+  .js .rv{transform:translateY(10px);transition:opacity .45s ease var(--d,0s),transform .45s ease var(--d,0s)}
+  .js .rv.in{transform:none}
+  /* kartu foto: statis (hanya foto + cahaya lembut). Tanpa sinar, gelembung, putaran, melayang */
+  .pc-ray,.pc-b{display:none}
+  .pc-halo,.pc-glow,.pc-halo::after,.pc-img{animation:none}
+  .pc-halo{box-shadow:none}
+  .pcard .bmini,.pcard .bmini li,.pbadge,.pc-live{-webkit-backdrop-filter:none;backdrop-filter:none}
+  .pcard .bmini li{background:linear-gradient(180deg,rgba(20,64,128,.85),rgba(6,30,74,.92))}
+  .pbadge{background:rgba(var(--tint),.92)}
+  /* animasi box-shadow = gambar ulang tiap frame -> statis di HP */
+  .pc-live i,.pb-dot,.pulse{animation:none;box-shadow:0 0 0 3px rgba(74,222,128,.22)}
+  /* caustic & berkas sinar: statis di HP (mask + animasi bersama = penyebab layar berkedip) */
+  .caustic i,.shafts i{animation:none;will-change:auto}
+  .shafts i{opacity:.75}
+  /* navbar penuh solid: teks di bawahnya tidak tembus/berkedip */
+  .nav.stuck{background:rgb(var(--tint))}
 }
